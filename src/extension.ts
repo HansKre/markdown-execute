@@ -15,7 +15,7 @@ export async function activate(context: vscode.ExtensionContext) {
       async (args) => {
         vscode.window.showInformationMessage('Sent to terminal for execution!');
         // get the extension config
-        const { allowSsh } =
+        const { executeInSsh } =
           vscode.workspace.getConfiguration('markdown-execute');
         // get active terminal or create new one
         const term =
@@ -23,41 +23,48 @@ export async function activate(context: vscode.ExtensionContext) {
         // get the process id of the terminal
         const pid = await term.processId;
         // get the state of the terminal
-        const { stdout: stateStdout, stderr: stateStderr } = await exec(
-          `ps -o state= -p ${pid}`
-        );
-        if (stateStderr) {
-          // if we can't check just send to the current one...
-          term.show();
-          term.sendText(args.command);
-          return;
-        }
-        // check if there's a running command in the active terminal
-        if (stateStdout?.includes('+')) {
-          // a + in the state indicates a process running in foreground
-          // so our terminal is not busy
-          // hence we can send the command to the terminal
-          term.show();
-          term.sendText(args.command);
-          return;
-        }
-        // if we're here, the terminal is busy
-        // to check if the the foreground process is ssh,
-        // we need to get the terminal's child process first
-        const { stdout: childProcessesStdout } = await exec(`pgrep -P ${pid}`);
-        if (childProcessesStdout && !isNaN(childProcessesStdout)) {
-          // then, get the command of the child process
-          const { stdout: childProcessCmdStdout } = await exec(
-            `ps -o command= -p ${childProcessesStdout}`
+        try {
+          const { stdout: stateStdout, stderr: stateStderr } = await exec(
+            `ps -o state= -p ${pid}`
           );
-          if (childProcessCmdStdout?.includes('ssh') && allowSsh) {
-            // if the child process is ssh and user allowed
-            // execution in ssh sessions
-            // we can send the command to it
+          if (stateStderr || !stateStdout) {
+            // if we can't check just send to the current one...
             term.show();
             term.sendText(args.command);
             return;
           }
+          // check if there's a running command in the active terminal
+          if (stateStdout?.includes('+')) {
+            // a + in the state indicates a process running in foreground
+            // so our terminal is not busy
+            // hence we can send the command to the terminal
+            term.show();
+            term.sendText(args.command);
+            return;
+          }
+          // if we're here, the terminal is busy
+          // to check if the the foreground process is ssh,
+          // we need to get the terminal's child process first
+          const { stdout: childProcessesStdout } = await exec(
+            `pgrep -P ${pid}`
+          );
+          if (childProcessesStdout && !isNaN(childProcessesStdout)) {
+            // then, get the command of the child process
+            const { stdout: childProcessCmdStdout } = await exec(
+              `ps -o command= -p ${childProcessesStdout}`
+            );
+            if (childProcessCmdStdout?.includes('ssh') && executeInSsh) {
+              // if the child process is ssh and user allowed
+              // execution in ssh sessions
+              // we can send the command to it
+              term.show();
+              term.sendText(args.command);
+              return;
+            }
+          }
+        } catch (err) {
+          // cp.exec throws an error if it would return an empty response
+          console.log(err);
         }
         // if we're here, the terminal is busy with a non-ssh process
         // or user doesn't allow ssh execution
