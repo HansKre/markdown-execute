@@ -1,13 +1,13 @@
 {
-  "name": "makrdown-execute",
-  "displayName": "makrdown-execute",
+  "name": "markdown-execute",
+  "displayName": "markdown-execute",
   "description": "Execute commands directly from Markdown",
   "version": "0.0.3",
   "publisher": "hanskre",
   "icon": "images/icon.png",
   "repository": {
     "type": "git",
-    "url": "https://github.com/hanskre/makrdown-execute.git"
+    "url": "https://github.com/hanskre/markdown-execute.git"
   },
   "engines": {
     "vscode": "^1.63.0"
