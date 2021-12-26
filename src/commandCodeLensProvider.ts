@@ -40,11 +40,7 @@ export class CommandCodeLensProvider implements vscode.CodeLensProvider {
         continue;
       }
 
-      if (
-        line.startsWith('```') ||
-        line.startsWith('```sh') ||
-        line.startsWith('```bash')
-      ) {
+      if (line.startsWith('```sh') || line.startsWith('```bash')) {
         inCommand = true;
         commandStartLine = i;
         continue;
