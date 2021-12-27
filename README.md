@@ -1,6 +1,6 @@
 # makrdown-execute
 
-Detects code blocks in your `markdown` files starting with **\`\`\`sh** and **\`\`\`bash** and and adds `'Execute command in terminal as Shell-Script'` or `'Execute command in terminal as NodeJs-Script'` label.
+Detects code blocks in your `markdown` files starting with **\`\`\`sh**, **\`\`\`bash** or **\`\`\`js** and and adds `'Execute command in terminal as Shell-Script'` or `'Execute command in terminal as NodeJs-Script'` label.
 
 Clicking on the label executes code-block until the closing ticks **\`\`\`** in the terminal as `Shell` or `NodeJs` script.
 
@@ -42,6 +42,10 @@ Initial release of `markdown-execute`.
 - Add keybinding to execute selection.
 - Refactor code.
 - Add proper documentation.
+
+### 0.0.6
+
+Mention **\`\`\`js** detection in README.md.
 
 ## Backlog
 
