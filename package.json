@@ -42,7 +42,7 @@
           "name": "Execute commands in SSH session",
           "type": "boolean",
           "default": true,
-          "description": "Allow active editor running a SSH session as target for commands"
+          "description": "Allow active terminal running a SSH session as target for commands"
         }
       }
     }

@@ -1,43 +1,47 @@
 # makrdown-execute
 
-Brief description coming soon ...
+Detects code blocks in your `markdown` files starting with **\`\`\`sh** and **\`\`\`bash** and and adds `'Execute command in terminal as Shell-Script'` or `'Execute command in terminal as NodeJs-Script'` label.
+
+Clicking on the label executes code-block until the closing ticks **\`\`\`** in the terminal as `Shell` or `NodeJs` script.
+
+Use `cmd+f1` (mac) / `ctrl+f1` (windows) shortcut to execute current selection as well.
 
 ## Features
 
-Describe specific features of your extension including screenshots of your extension in action. Image paths are relative to this README file.
+### Execute code blocks in terminal
 
-For example if there is an image subfolder under your extension project workspace:
+![demo-execute](images/demo-execute.gif)
 
-\!\[feature X\]\(images/feature-x.png\)
+### Execute Selection
 
-> Tip: Many popular extensions utilize animations. This is an excellent way to show off your extension! We recommend short, focused animations that are easy to follow.
+Select code and either use shortcut `cmd+f1` (mac) / `ctrl+f1` (windows) to execute or open the VSCode `command palette` and type `markdown execute` to find the command:
+
+![demo-shortcut](images/demo-shortcut.gif)
+
+### Side By Side view
+
+If you interact with terminal very often, I recomment using the terminal in editor area side by side in split view.:
+
+![side-by-side-view](images/side-by-side.png)
 
 ## Extension Settings
 
-Include if your extension adds any VS Code settings through the `contributes.configuration` extension point.
-
-For example:
-
 This extension contributes the following settings:
 
-- `myExtension.enable`: enable/disable this extension
-- `myExtension.thing`: set to `blah` to do something
+- `markdown-execute.executeInSsh`: enable/disable execution of code in a SSH session. If disabled and active terminal is running a SSH session, a new terminal is used as target for commands.
+- `markdown-execute.executeSelection`: Shortcut to execute selection. Defaults to `cmd+f1` (mac) / `ctrl+f1` (windows).
 
 ## Release Notes
 
-Users appreciate release notes as you update your extension.
+### 0.0.1
 
-### 1.0.0
+Initial release of `markdown-execute`.
 
-Initial release of ...
+### 0.0.5
 
-### 1.0.1
-
-Fixed issue #.
-
-### 1.1.0
-
-Added features X, Y, and Z.
+- Add keybinding to execute selection.
+- Refactor code.
+- Add proper documentation.
 
 ## Backlog
 
@@ -50,3 +54,9 @@ Added features X, Y, and Z.
 2. Add quick select keybinding without promting:
    1. `cmd+f1 s` Execute command as Shell
    2. `cmd+f1 s` Execute command with Nodejs
+
+## Appreciations
+
+[Sycl´s Markdown Command Runner](https://marketplace.visualstudio.com/items?itemName=Sycl.markdown-command-runner) Extension served as inspiration. Thanks!
+
+It was lacking execution of code blocks in active SSH sessions, shortcuts and `NodeJs`-support, so I made my own.
