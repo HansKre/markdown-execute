@@ -7,7 +7,7 @@
   - \`\`\`js
 
 - Adds `'Execute command in terminal as Shell-Script'` or `'Execute command in terminal as NodeJs-Script'` label.
-- Clicking on the label executes code-block until the closing ticks **\`\`\`** in the terminal as `Shell` or `NodeJs` script.
+- Clicking on the label executes code-block until the closing ticks \`\`\` in the terminal as `Shell` or `NodeJs` script.
 
 Alternatively, use `cmd+f1` (mac) / `ctrl+f1` (windows) shortcut to execute current selection.
 
