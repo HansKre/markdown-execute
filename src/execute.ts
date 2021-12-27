@@ -13,7 +13,9 @@ export async function execute(command: string | null): Promise<void> {
   if (!command) {
     return;
   }
-  vscode.window.showInformationMessage('Sent to terminal for execution!');
+  vscode.window.showInformationMessage(
+    'Code block sent to terminal for execution!'
+  );
   // get the extension config
   const { executeInSsh } =
     vscode.workspace.getConfiguration('markdown-execute');
