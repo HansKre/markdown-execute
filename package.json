@@ -16,11 +16,25 @@
     "Other"
   ],
   "activationEvents": [
-    "onLanguage:markdown"
+    "onLanguage:markdown",
+    "onCommand:markdown-execute.executeSelection"
   ],
   "main": "./dist/extension.js",
   "contributes": {
-    "commands": [],
+    "commands": [
+      {
+        "command": "markdown-execute.executeSelection",
+        "title": "Markdown Execute: Execute Selection"
+      }
+    ],
+    "keybindings": [
+      {
+        "command": "markdown-execute.executeSelection",
+        "key": "ctrl+f1",
+        "mac": "cmd+f1",
+        "when": "editorTextFocus && editorLangId == markdown"
+      }
+    ],
     "configuration": {
       "title": "Markdown Execute",
       "properties": {

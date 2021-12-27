@@ -43,6 +43,36 @@ vsce publish patch
 # <publisherID>.<extension-name> published to VS Code Marketplace
 ```
 
+## Configuration
+
+VSCode will display commands in Shortcuts-menu, even if they are not registered in the `package.json`. Hence, they will lack a description / title. So it could be better to provide it proactively.
+
+```json
+"contributes": {
+    "commands": [
+      {
+        "command": "markdown-execute.sayHello",
+        // this title is shown in the VS Code command palette
+        // and also in Shortcuts menu
+        "title": "Hello from Markdown Execute"
+      }
+    ],
+    ...
+}
+```
+
+## Activation Events
+
+### `[onCommand](https://code.visualstudio.com/api/references/activation-events#onCommand)`
+
+Whenever a command, e.g. `markdown-execute.sayHello` is being invoked, this activation **event** is emitted and interested **other** extensions will be activated (pub-sub pattern):
+
+```json
+"activationEvents": [
+    "onCommand:markdown-execute.sayHello"
+]
+```
+
 ## Extension Guidelines
 
 [link](https://code.visualstudio.com/api/references/extension-guidelines)

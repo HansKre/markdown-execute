@@ -38,3 +38,15 @@ Fixed issue #.
 ### 1.1.0
 
 Added features X, Y, and Z.
+
+## Backlog
+
+1. Add PHP & Python as execution runtimes:
+   1. `commandCodeLensProvider`:
+      1. Execute command with Python
+      2. Execute command PHP
+   2. `extension.ts` & `execute.ts`:
+      1. Add PHP and Python as execution runtimes
+2. Add quick select keybinding without promting:
+   1. `cmd+f1 s` Execute command as Shell
+   2. `cmd+f1 s` Execute command with Nodejs
