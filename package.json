@@ -1,6 +1,6 @@
 {
   "name": "markdown-execute",
-  "displayName": "markdown-execute",
+  "displayName": "Markdown Execute",
   "description": "Execute commands directly from Markdown",
   "version": "0.0.6",
   "publisher": "hanskre",
