@@ -4,7 +4,7 @@ Detects code blocks in your `markdown` files starting with **\`\`\`sh**, **\`\`\
 
 Clicking on the label executes code-block until the closing ticks **\`\`\`** in the terminal as `Shell` or `NodeJs` script.
 
-Use `cmd+f1` (mac) / `ctrl+f1` (windows) shortcut to execute current selection as well.
+Use `cmd+f1` (mac) / `ctrl+f1` (windows) shortcut to execute current selection.
 
 ## Features
 
@@ -36,6 +36,10 @@ This extension contributes the following settings:
 ### 0.0.1
 
 Initial release of `markdown-execute`.
+
+### 0.0.2 to 0.0.4
+
+Various bug fixes and improvements.
 
 ### 0.0.5
 
