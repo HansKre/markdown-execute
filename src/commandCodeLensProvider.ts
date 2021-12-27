@@ -1,4 +1,5 @@
 import vscode = require('vscode');
+import { Command, Runtime } from './types/types';
 
 export class CommandCodeLensProvider implements vscode.CodeLensProvider {
   provideCodeLenses(
@@ -11,20 +12,19 @@ export class CommandCodeLensProvider implements vscode.CodeLensProvider {
     let inCommand = false;
     let currentCommand = '';
     let commandStartLine = 0;
+    let runtime = null;
     for (let i = 0; i < lines.length; i++) {
       const line = lines[i].trim();
 
-      // detect the start of a command block
-      if (
-        !inCommand &&
-        (line.startsWith('```sh') || line.startsWith('```bash'))
-      ) {
+      // detect start of a command block
+      if (!inCommand && detectRuntime(line)) {
         inCommand = true;
         commandStartLine = i;
+        runtime = detectRuntime(line);
         continue;
       }
 
-      if (inCommand) {
+      if (inCommand && runtime) {
         // add line to current command
         if (line !== '```') {
           currentCommand += line + '\n';
@@ -32,9 +32,15 @@ export class CommandCodeLensProvider implements vscode.CodeLensProvider {
         }
         // register the command block
         if (line === '```') {
-          registerCommandBlock(currentCommand, codeLenses, commandStartLine);
+          registerCommandBlock(
+            currentCommand,
+            codeLenses,
+            commandStartLine,
+            runtime
+          );
           inCommand = false;
           currentCommand = '';
+          runtime = null;
           continue;
         }
       }
@@ -56,12 +62,15 @@ export class CommandCodeLensProvider implements vscode.CodeLensProvider {
 function registerCommandBlock(
   currentCommand: string,
   codeLenses: vscode.CodeLens[],
-  commandStartLine: number
+  commandStartLine: number,
+  runtime: Runtime
 ) {
   const cmd: vscode.Command = {
-    title: 'Execute command in terminal',
+    title: `Execute command in terminal as ${runtime}-Script`,
     command: 'markdown-execute.execute',
-    arguments: [{ command: currentCommand }],
+    tooltip:
+      'Focuses on previously selected terminal if it is not busy and executes code block',
+    arguments: [<Command>{ command: currentCommand, runtime: runtime }],
   };
   codeLenses.push(
     new vscode.CodeLens(
@@ -72,4 +81,13 @@ function registerCommandBlock(
       cmd
     )
   );
+}
+function detectRuntime(line: string): Runtime | null {
+  if (line.startsWith('```sh') || line.startsWith('```bash')) {
+    return Runtime.shell;
+  }
+  if (line.startsWith('```js')) {
+    return Runtime.nodeJs;
+  }
+  return null;
 }

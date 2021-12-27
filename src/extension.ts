@@ -5,7 +5,8 @@ import * as vscode from 'vscode';
 const util = require('util');
 export const exec = util.promisify(require('child_process').exec);
 import { CommandCodeLensProvider } from './commandCodeLensProvider';
-import { execute } from './execute';
+import { executeAt } from './executeAt';
+import { Command, Runtime } from './types/types';
 
 // this method is called when your extension is activated
 // your extension is activated the very first time the command is executed
@@ -13,8 +14,8 @@ export async function activate(context: vscode.ExtensionContext) {
   context.subscriptions.push(
     vscode.commands.registerCommand(
       'markdown-execute.execute',
-      async (args) => {
-        execute(args.command);
+      async (args: Command) => {
+        executeAt(args.runtime, args.command);
       }
     )
   );
@@ -53,23 +54,14 @@ export async function activate(context: vscode.ExtensionContext) {
         };
 
         const runtime = await vscode.window.showQuickPick(
-          ['Shell', 'NodeJs'],
+          Object.values(Runtime),
           options
         );
         vscode.window.showInformationMessage(
           `Executing as ${runtime} command!`
         );
 
-        switch (runtime) {
-          case 'Shell':
-            execute(selectedText);
-            break;
-          case 'NodeJs':
-            execute(`node -e "${selectedText.replaceAll(`"`, `'`)}"`);
-            break;
-          default:
-            break;
-        }
+        executeAt(runtime, selectedText);
       }
     )
   );
