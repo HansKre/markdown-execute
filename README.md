@@ -1,5 +1,7 @@
 # makrdown-execute
 
+VSCode Extension which allows you to execute code from `markdown` files.
+
 - Detects code blocks in your `markdown` files starting with:
 
   - \`\`\`sh
@@ -60,15 +62,21 @@ Mention **\`\`\`js** detection in README.md.
 
 Format README.md and change display-name.
 
+### 0.0.8
+
+Ignore lines starting with `//`.
+
 ## Backlog
 
-1. Add PHP & Python as execution runtimes:
+1. Analyse and fix why the watch-task in debugging terminal is ignored
+2. Support execution of multi-line selection
+3. Add PHP & Python as execution runtimes:
    1. `commandCodeLensProvider`:
       1. Execute command with Python
       2. Execute command PHP
    2. `extension.ts` & `execute.ts`:
       1. Add PHP and Python as execution runtimes
-2. Add quick select keybinding without promting:
+4. Add quick select keybinding without promting:
    1. `cmd+f1 s` Execute command as Shell
    2. `cmd+f1 s` Execute command with Nodejs
 

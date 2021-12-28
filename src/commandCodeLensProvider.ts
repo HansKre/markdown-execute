@@ -26,7 +26,7 @@ export class CommandCodeLensProvider implements vscode.CodeLensProvider {
 
       if (inCommand && runtime) {
         // add line to current command
-        if (line !== '```') {
+        if (line !== '```' && !line.startsWith('//')) {
           currentCommand += line + '\n';
           continue;
         }
