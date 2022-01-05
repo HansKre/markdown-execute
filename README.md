@@ -40,13 +40,21 @@ This extension contributes the following settings:
 
 ## Release Notes
 
-### 0.0.1
+### 0.0.9 to 0.0.10
 
-Initial release of `markdown-execute`.
+Add execution-support for multiline-selection.
 
-### 0.0.2 to 0.0.4
+### 0.0.8
 
-Various bug fixes and improvements.
+Ignore lines starting with `//`.
+
+### 0.0.7
+
+Format README.md and change display-name.
+
+### 0.0.6
+
+Mention **\`\`\`js** detection in README.md.
 
 ### 0.0.5
 
@@ -54,29 +62,24 @@ Various bug fixes and improvements.
 - Refactor code.
 - Add proper documentation.
 
-### 0.0.6
+### 0.0.2 to 0.0.4
 
-Mention **\`\`\`js** detection in README.md.
+Various bug fixes and improvements.
 
-### 0.0.7
+### 0.0.1
 
-Format README.md and change display-name.
-
-### 0.0.8
-
-Ignore lines starting with `//`.
+Initial release of `markdown-execute`.
 
 ## Backlog
 
 1. Analyse and fix why the watch-task in debugging terminal is ignored
-2. Support execution of multi-line selection
-3. Add PHP & Python as execution runtimes:
+2. Add PHP & Python as execution runtimes:
    1. `commandCodeLensProvider`:
       1. Execute command with Python
       2. Execute command PHP
    2. `extension.ts` & `execute.ts`:
       1. Add PHP and Python as execution runtimes
-4. Add quick select keybinding without promting:
+3. Add quick select keybinding without promting:
    1. `cmd+f1 s` Execute command as Shell
    2. `cmd+f1 s` Execute command with Nodejs
 

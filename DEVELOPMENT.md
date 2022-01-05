@@ -32,6 +32,7 @@ You can also specify a complete SemVer compatible version on the command line: `
 If vsce publish is run in a git repo, it will also create a version commit and tag via npm-version. The default commit message will be extension's version, but you can supply a custom commit message using the `-m` flag. (The current version can be referenced from the commit message with `%s`.)
 
 ```sh
+# first: update release notes!
 # from extension root
 vsce package
 # <extenstion-name>.vsix generated
