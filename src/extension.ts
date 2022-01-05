@@ -37,11 +37,49 @@ export async function activate(context: vscode.ExtensionContext) {
         }
 
         const lines = activeEditor.document.getText().split('\n');
-        const selectedLine = lines[activeEditor.selection.start.line];
-        const selectedText = selectedLine.slice(
-          activeEditor.selection.start.character,
-          activeEditor.selection.end.character
-        );
+        let selectedText = '';
+        for (
+          let i = activeEditor.selection.start.line;
+          i <= activeEditor.selection.end.line;
+          i++
+        ) {
+          // exactly one line selected
+          if (
+            activeEditor.selection.start.line ===
+            activeEditor.selection.end.line
+          ) {
+            selectedText += newSelection(
+              lines[i],
+              activeEditor.selection.start.character,
+              activeEditor.selection.end.character
+            );
+            continue;
+          }
+          // multiple lines selected: first line
+          if (i === activeEditor.selection.start.line) {
+            selectedText += newSelection(
+              lines[i],
+              activeEditor.selection.start.character,
+              lines[i].length
+            );
+            continue;
+          }
+          // multiple lines selected: last line
+          if (i === activeEditor.selection.end.line) {
+            selectedText += newSelection(
+              lines[i],
+              0,
+              activeEditor.selection.end.character
+            );
+            continue;
+          }
+          // multiple lines selected: lines in between
+          selectedText += newSelection(lines[i], 0, lines[i].length);
+        }
+
+        // remove the last line break
+        selectedText = selectedText.substring(0, selectedText.length - 1);
+        // console.log(selectedText);
 
         if (!selectedText) {
           vscode.window.showInformationMessage('Nothing selected');
@@ -62,6 +100,14 @@ export async function activate(context: vscode.ExtensionContext) {
       }
     )
   );
+}
+
+function newSelection(line: string, start: number, stop: number) {
+  const selection = line.substring(start, stop).trim();
+  if (selection && !selection.startsWith('//')) {
+    return selection + '\n';
+  }
+  return '';
 }
 
 // this method is called when your extension is deactivated
