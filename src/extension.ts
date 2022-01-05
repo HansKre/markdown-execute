@@ -57,9 +57,6 @@ export async function activate(context: vscode.ExtensionContext) {
           Object.values(Runtime),
           options
         );
-        vscode.window.showInformationMessage(
-          `Executing as ${runtime} command!`
-        );
 
         executeAt(runtime, selectedText);
       }
