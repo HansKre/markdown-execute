@@ -1,6 +1,12 @@
 import vscode = require('vscode');
 import { Command, Runtime } from './types/types';
 
+/**
+ * Handles the creation of code lenses in markdown-files
+ * Code lenses are annotations in certain file-types
+ * Adds following annotation to code-blocks:
+ * 'Execute command in terminal as ${runtime}-Script' code lenses
+ */
 export class CommandCodeLensProvider implements vscode.CodeLensProvider {
   provideCodeLenses(
     document: vscode.TextDocument,
