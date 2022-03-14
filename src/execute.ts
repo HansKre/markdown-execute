@@ -2,6 +2,12 @@ import * as vscode from 'vscode';
 import { exec } from './extension';
 
 const DEBUG_OUT = false;
+
+function sendToTerminal(term: vscode.Terminal, command: string) {
+  term.show();
+  term.sendText(command);
+}
+
 /**
  * Method to execute a command in the terminal.
  * Aquires a non-busy terminal, shows and focuses at it
@@ -25,8 +31,7 @@ export async function execute(command: string | null): Promise<void> {
   if (!term) {
     DEBUG_OUT && console.log('No active terminal. Creating new.');
     term = vscode.window.createTerminal();
-    term.show();
-    term.sendText(command);
+    sendToTerminal(term, command);
     return;
   }
   // get the process id of active terminal
@@ -62,8 +67,7 @@ export async function execute(command: string | null): Promise<void> {
           console.log(
             'Terminal is executing ssh session and executeInSsh is true'
           );
-        term.show();
-        term.sendText(command);
+        sendToTerminal(term, command);
         return;
       }
     }
@@ -75,8 +79,7 @@ export async function execute(command: string | null): Promise<void> {
     // there are no child processes, so the terminal is not busy
     DEBUG_OUT && console.log(error);
     DEBUG_OUT && console.log('No child processes, hence terminal is not busy.');
-    term.show();
-    term.sendText(command);
+    sendToTerminal(term, command);
     return;
   }
   // if we're here, the terminal is busy with a non-ssh process
@@ -85,7 +88,6 @@ export async function execute(command: string | null): Promise<void> {
   DEBUG_OUT && console.log('Creating new terminal');
   term = vscode.window.createTerminal();
   // execute the command in the new terminal
-  term.show();
-  term.sendText(command);
+  sendToTerminal(term, command);
   return;
 }
