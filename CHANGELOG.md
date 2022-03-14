@@ -1,9 +1,37 @@
 # Change Log
 
-All notable changes to the "makrdown-execute" extension will be documented in this file.
+## 0.0.13
 
-Check [Keep a Changelog](http://keepachangelog.com/) for recommendations on how to structure this file.
+- Fix detection of busy terminals on Windows Subsystem for Linux (WSL)
+- Treat `kubectl exec` as SSH session
+- Move Release Notes to `CHANGELOG.md`
 
-## [Unreleased]
+## 0.0.9 to 0.0.10
 
-- Initial release
+Add execution-support for multiline-selection.
+
+## 0.0.8
+
+Ignore lines starting with `//`.
+
+## 0.0.7
+
+Format README.md and change display-name.
+
+## 0.0.6
+
+Mention **\`\`\`js** detection in README.md.
+
+## 0.0.5
+
+- Add keybinding to execute selection.
+- Refactor code.
+- Add proper documentation.
+
+## 0.0.2 to 0.0.4
+
+Various bug fixes and improvements.
+
+## 0.0.1
+
+Initial release of `markdown-execute`.

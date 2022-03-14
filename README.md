@@ -38,42 +38,6 @@ This extension contributes the following settings:
 - `markdown-execute.executeInSsh`: enable/disable execution of code in a SSH session. If disabled and active terminal is running a SSH session, a new terminal is used as target for commands.
 - `markdown-execute.executeSelection`: Shortcut to execute selection. Defaults to `cmd+f1` (mac) / `ctrl+f1` (windows).
 
-## Release Notes
-
-### 0.0.12
-
-Fix detection of busy terminals on Windows Subsystem for Linux (WSL) and treat `kubectl exec` as SSH session.
-
-### 0.0.9 to 0.0.10
-
-Add execution-support for multiline-selection.
-
-### 0.0.8
-
-Ignore lines starting with `//`.
-
-### 0.0.7
-
-Format README.md and change display-name.
-
-### 0.0.6
-
-Mention **\`\`\`js** detection in README.md.
-
-### 0.0.5
-
-- Add keybinding to execute selection.
-- Refactor code.
-- Add proper documentation.
-
-### 0.0.2 to 0.0.4
-
-Various bug fixes and improvements.
-
-### 0.0.1
-
-Initial release of `markdown-execute`.
-
 ## Backlog
 
 1. Analyse and fix why the watch-task in debugging terminal is ignored
