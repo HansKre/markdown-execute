@@ -40,6 +40,10 @@ This extension contributes the following settings:
 
 ## Release Notes
 
+### 0.0.11
+
+Fix detection of busy terminals on Windows Subsystem for Linux (WSL) and treat `kubectl exec` as SSH session.
+
 ### 0.0.9 to 0.0.10
 
 Add execution-support for multiline-selection.
