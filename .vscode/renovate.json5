@@ -1,0 +1,48 @@
+// cheat sheet article: https://www.augmentedmind.de/2021/07/25/renovate-bot-cheat-sheet/
+// this renovate bot config file is based on the cheat sheet article
+// it sets up renovate bot to automatically merge non-major (non-breaking)
+// dependency updates.
+// Updates are rebased to the next-branch by default.
+{
+  $schema: 'https://docs.renovatebot.com/renovate-schema.json',
+  extends: [
+    'config:base',
+    // always rebase any still-open renovate temporary PR-branch, whenever its source branch has changed (#8)
+    ':rebaseStalePrs',
+  ],
+  packageRules: [
+    {
+      description: 'Automatically merge minor and patch-level updates',
+      matchUpdateTypes: ['minor', 'patch', 'pin', 'digest'],
+      automerge: true,
+      // Force Renovate to not create a PR (but merge its branches directly), to avoid PR-related email spam
+      automergeType: 'branch',
+      schedule: ['on the first day of the month'],
+    },
+    // {
+    //   depTypeList: ['devDependencies'],
+    //   groupName: 'all devDependencies',
+    //   "schedule": ["on the first day of the month"],
+    // },
+    // {
+    //   depTypeList: ['dependencies'],
+    //   groupName: 'all non-dev-Dependencies',
+    //   "schedule": ["on the first day of the month"],
+    // },
+  ],
+  // Handle pulled dependency updates (#9)
+  rollbackPrs: true,
+  stabilityDays: 7,
+}
+
+// https://github.com/renovatebot/config-help/issues/88
+// https://docs.renovatebot.com/noise-reduction/
+/*
+One possibility if you are automerging anyway is to do a branch automerge. When branch automerging is enabled, Renovate will:
+
+- Create the branch for testing
+- If tests fail, raise a PR
+- If tests pass, merge the commit to master
+
+Scheduling can indirectly help reduce the noise too. e.g. if you schedule for weekly and some dependencies are on average getting updated 2 times per week, then in theory that reduces the number of PRs for those dependencies by 50%. But still you probably end up with quite a few all coming at once, weekly.
+*/
