@@ -2,7 +2,7 @@
 
 VSCode Extension which allows you to execute code from `markdown` files.
 
-- Detects code blocks in your `markdown` files starting with:
+- Detects code blocks in your `markdown`-files starting with:
 
   - \`\`\`sh
   - \`\`\`bash

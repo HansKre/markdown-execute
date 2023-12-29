@@ -29,10 +29,10 @@ Publishing happens using `vsce`, the CLI tool for managing VS Code extensions.
 1. Create an Azure DevOps account
 2. [Get an Azure DevOps Personal Access Token](https://code.visualstudio.com/api/working-with-extensions/publishing-extension#get-a-personal-access-token)
 3. Create a publisher
-4. Install `vsce`
+4. Install `vsce`-CLI
 
    ```sh
-       npm install -g vsce
+       npm install -g @vscode/vsce
    ```
 
 5. Login `vsce` with your publisher
@@ -40,6 +40,7 @@ Publishing happens using `vsce`, the CLI tool for managing VS Code extensions.
    ```sh
        vsce login <publisher name>
        # provide your personal access token
+       # login at https://dev.azure.com if your current token expired to create a new one
    ```
 
 ### Publish a new version
