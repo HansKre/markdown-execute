@@ -39,13 +39,14 @@ export async function execute(command: string | null): Promise<void> {
   // get the state of the terminal
   /**
    * note: `ps -o state= -p ${pid}` is not a reliable way to check
-   * if a termin is busy. One of the reasons seems to be that state
+   * if a terminal is busy. One of the reasons seems to be that state
    * is not consistent between distributions, e.g. Ubuntu seems to
    * return 'S' for 'sleeping', even if terminal is executing work.
    *
-   * To check if terminal is busy, we check for child processes instead
-   * Commands are executed as child processes.
-   * If there are none, we can assume that terminal is not busy
+   * Hence, to check if terminal is busy, we shall check for child processes
+   * instead (child processes is how user-commands are executed).
+   * If there are none, we shall assume that terminal is not busy and is safe
+   * to be used.
    */
   try {
     // get the terminal's child processes

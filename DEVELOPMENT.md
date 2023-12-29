@@ -103,7 +103,7 @@ Whenever a command, e.g. `markdown-execute.sayHello` is being invoked, this acti
 - Quicktime on mac, export to 480p
 - Use [ezgif](https://ezgif.com/video-to-gif) to speedup 3x and convert to gif
 
-## Commands for testing
+## Commands for testing (examples of code blocks in markdown)
 
 ### Login to jenkins and execute for-loop
 
@@ -124,6 +124,7 @@ Whenever a command, e.g. `markdown-execute.sayHello` is being invoked, this acti
 
    ```sh
       export jenkins=ec2-3-122-205-211.eu-central-1.compute.amazonaws.com
+      echo $jenkins
    ```
 
 2. SSH into machine
