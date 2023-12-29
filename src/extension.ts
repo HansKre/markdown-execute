@@ -14,7 +14,17 @@ export async function activate(context: vscode.ExtensionContext) {
   context.subscriptions.push(
     vscode.commands.registerCommand(
       'markdown-execute.execute',
-      async (args: Command) => {
+      async (args) => {
+        if (!args?.runtime) {
+          vscode.window.showInformationMessage('No runtime selected.');
+          return;
+        }
+        if (!args?.command) {
+          vscode.window.showInformationMessage(
+            'Empty command, nothing to execute.'
+          );
+          return;
+        }
         executeAt(args.runtime, args.command);
       }
     )
