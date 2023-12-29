@@ -127,19 +127,29 @@ Whenever a command, e.g. `markdown-execute.sayHello` is being invoked, this acti
       echo $jenkins
    ```
 
-2. SSH into machine
+2. Special chars
+
+   ```js
+   let i = 12;
+   console.log('ab$cd');
+   console.log('ab$$cd');
+   console.log('sdfdsgdfg');
+   console.log(`ab${i}cd`);
+   ```
+
+3. SSH into machine
 
    ```sh
       ssh -i ./udemy-devops-project/follow/secrets/aws-jenkins.pem ec2-user@$jenkins
    ```
 
-3. Become root
+4. Become root
 
    ```sh
       sudo su -
    ```
 
-4. Change hostname & reboot
+5. Change hostname & reboot
 
    ```sh
       # either
@@ -151,7 +161,7 @@ Whenever a command, e.g. `markdown-execute.sayHello` is being invoked, this acti
       reboot
    ```
 
-5. SSH back into machine
+6. SSH back into machine
 
    ```sh
       # wait for reboot
@@ -160,13 +170,13 @@ Whenever a command, e.g. `markdown-execute.sayHello` is being invoked, this acti
       sudo su -
    ```
 
-6. Update OS
+7. Update OS
 
    ```sh
       yum update -y && yum upgrade -y
    ```
 
-7. Install Jenkins and Java 11:
+8. Install Jenkins and Java 11:
 
    ```sh
       # add redhat-jenkins-repo
