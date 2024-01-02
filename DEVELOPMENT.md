@@ -154,19 +154,25 @@ Whenever a command, e.g. `markdown-execute.sayHello` is being invoked, this acti
    three spaces   in a row
    ```
 
-3. SSH into machine
+3. Test Python
+
+   ```python
+   print("it works")
+   ```
+
+4. SSH into machine
 
    ```sh
       ssh -i ./udemy-devops-project/follow/secrets/aws-jenkins.pem ec2-user@$jenkins
    ```
 
-4. Become root
+5. Become root
 
    ```sh
       sudo su -
    ```
 
-5. Change hostname & reboot
+6. Change hostname & reboot
 
    ```sh
       # either
@@ -178,7 +184,7 @@ Whenever a command, e.g. `markdown-execute.sayHello` is being invoked, this acti
       reboot
    ```
 
-6. SSH back into machine
+7. SSH back into machine
 
    ```sh
       # wait for reboot
@@ -187,28 +193,28 @@ Whenever a command, e.g. `markdown-execute.sayHello` is being invoked, this acti
       sudo su -
    ```
 
-7. Update OS
+8. Update OS
 
    ```sh
       yum update -y && yum upgrade -y
    ```
 
-8. Install Jenkins and Java 11:
+9. Install Jenkins and Java 11:
 
-   ```sh
-      # add redhat-jenkins-repo
-      wget -O /etc/yum.repos.d/jenkins.repo https://pkg.jenkins.io/redhat-stable/jenkins.repo
-      # add jenkins package public key
-      rpm --import https://pkg.jenkins.io/redhat-stable/jenkins.io.key
-      # install repository that provides 'daemonize'
-      amazon-linux-extras install epel -y
-      # install jdk
-      amazon-linux-extras install java-openjdk11 -y
-      # test jdk installation
-      java --version
-      # install jenkins
-      yum install jenkins -y
-   ```
+```sh
+   # add redhat-jenkins-repo
+   wget -O /etc/yum.repos.d/jenkins.repo https://pkg.jenkins.io/redhat-stable/jenkins.repo
+   # add jenkins package public key
+   rpm --import https://pkg.jenkins.io/redhat-stable/jenkins.io.key
+   # install repository that provides 'daemonize'
+   amazon-linux-extras install epel -y
+   # install jdk
+   amazon-linux-extras install java-openjdk11 -y
+   # test jdk installation
+   java --version
+   # install jenkins
+   yum install jenkins -y
+```
 
 ## Testing available Terminals
 

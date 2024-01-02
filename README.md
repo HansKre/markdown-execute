@@ -7,9 +7,10 @@ VSCode Extension which allows you to execute code from `markdown` files.
   - \`\`\`sh
   - \`\`\`bash
   - \`\`\`js
+  - \`\`\`python
 
-- Adds `'Execute command in terminal as Shell-Script'` or `'Execute command in terminal as NodeJs-Script'` label.
-- Clicking on the label executes code-block until the closing ticks \`\`\` in the terminal as `Shell` or `NodeJs` script.
+- Adds `'Execute command in terminal as Shell-Script'`, `'Execute command in terminal as NodeJs-Script'`, `'Execute command in terminal as python-Script'` label.
+- Clicking on the label executes code-block until the closing ticks \`\`\` in the terminal as `Shell`, `NodeJs` or `Python` script.
 
 Alternatively, use `cmd+f1` (mac) / `ctrl+f1` (windows) shortcut to execute current selection.
 

@@ -4,12 +4,9 @@ import * as vscode from 'vscode';
 // promisify cp.exec
 const util = require('util');
 export const exec = util.promisify(require('child_process').exec);
-import {
-  CommandCodeLensProvider,
-  detectRuntime,
-} from './commandCodeLensProvider';
+import { CommandCodeLensProvider } from './commandCodeLensProvider';
 import { executeAt } from './executeAt';
-import { Command, Runtime } from './types/types';
+import { Command, Runtime, detectRuntime } from './types/types';
 
 const DEBUG_OUT = false;
 

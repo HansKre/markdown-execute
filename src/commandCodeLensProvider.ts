@@ -1,5 +1,5 @@
 import vscode = require('vscode');
-import { Command, Runtime } from './types/types';
+import { Command, Runtime, detectRuntime } from './types/types';
 
 /**
  * Handles the creation of code lenses in markdown-files
@@ -87,14 +87,4 @@ function registerCommandBlock(
       cmd
     )
   );
-}
-
-export function detectRuntime(line: string): Runtime | null {
-  if (line.startsWith('```sh') || line.startsWith('```bash')) {
-    return Runtime.shell;
-  }
-  if (line.startsWith('```js')) {
-    return Runtime.nodeJs;
-  }
-  return null;
 }
