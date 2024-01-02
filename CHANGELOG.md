@@ -1,5 +1,20 @@
 # Change Log
 
+## 1.0.0
+
+- Add `python`-support
+- Mark as stable release to participate in `SemVer`
+
+## 0.0.15
+
+- Improve selection of available terminals, even if they are not active
+- Escape characters for better shell-support
+
+## 0.0.14
+
+- Bump dependencies
+- Add auto-selection-feature if user presses extension-shortcut with no valid selection
+
 ## 0.0.13
 
 - Fix detection of busy terminals on Windows Subsystem for Linux (WSL)
