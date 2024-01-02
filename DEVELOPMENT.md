@@ -151,6 +151,7 @@ Whenever a command, e.g. `markdown-execute.sayHello` is being invoked, this acti
    ab$$cd
    sdfdsgdfg
    ab12cd
+   three spaces   in a row
    ```
 
 3. SSH into machine
