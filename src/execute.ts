@@ -125,12 +125,14 @@ async function isAvailable(term: vscode.Terminal): Promise<boolean> {
     // we need to handle this case in catch-block
     // since exit-code:1 is treated as 'Error: Command failed'
     // there are no child processes, so the terminal is not busy
-    if (hasOwnProperties(error, ['stdout', 'code', 'killed'])) {
+    if (hasOwnProperties(error, ['stdout', 'code', 'killed', 'stderr'])) {
       DEBUG_OUT && console.log(error);
 
       const isAvailable =
         typeof error.stdout === 'string' &&
         error.stdout === '' &&
+        typeof error.stderr === 'string' &&
+        error.stderr === '' &&
         typeof error.code === 'number' &&
         error.code === 1 &&
         typeof error.killed === 'boolean' &&
