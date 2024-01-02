@@ -209,3 +209,11 @@ Whenever a command, e.g. `markdown-execute.sayHello` is being invoked, this acti
       # install jenkins
       yum install jenkins -y
    ```
+
+## Testing available Terminals
+
+1. Press `F5` to start a new VSCode-Instance for debugging
+2. Create some terminal-instances (e.g. create one by sending new execution to it)
+3. Close the debugging-instance
+4. Repeat with #1
+5. Debugging out goes to the "DEBUG CONSOLE" of the parent-VSCode-Instance
