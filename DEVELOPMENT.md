@@ -135,6 +135,22 @@ Whenever a command, e.g. `markdown-execute.sayHello` is being invoked, this acti
    console.log('ab$$cd');
    console.log('sdfdsgdfg');
    console.log(`ab${i}cd`);
+   console.log(`three spaces   in a row`);
+   ```
+
+   Expected output:
+
+   ```output
+   node -e "let i = 12;
+   dquote> console.log('ab\$cd');
+   dquote> console.log('ab\$\$cd');
+   dquote> console.log('sdfdsgdfg');
+   dquote> console.log(\`ab\${i}cd\`);
+   dquote> "
+   ab$cd
+   ab$$cd
+   sdfdsgdfg
+   ab12cd
    ```
 
 3. SSH into machine

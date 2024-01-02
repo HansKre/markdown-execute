@@ -43,6 +43,9 @@ export async function activate(context: vscode.ExtensionContext) {
       async () => {
         const activeEditor = vscode.window.activeTextEditor;
         if (!activeEditor) {
+          vscode.window.showInformationMessage(
+            'Could not detect an active editor.'
+          );
           return;
         }
 
