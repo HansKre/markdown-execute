@@ -8,7 +8,6 @@ export function executeAt(runtime: string | undefined, selectedText: string) {
       execute(selectedText);
       break;
     case Runtime.nodeJs:
-      console.log('executing:', `node -e "${escapeForShell(selectedText)}"`);
       execute(`node -e "${escapeForShell(selectedText)}"`);
       break;
     default:
