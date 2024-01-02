@@ -88,7 +88,8 @@ function registerCommandBlock(
     )
   );
 }
-function detectRuntime(line: string): Runtime | null {
+
+export function detectRuntime(line: string): Runtime | null {
   if (line.startsWith('```sh') || line.startsWith('```bash')) {
     return Runtime.shell;
   }
