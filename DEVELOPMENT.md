@@ -39,7 +39,7 @@ Publishing happens using `vsce`, the CLI tool for managing VS Code extensions.
 
    ```sh
        vsce login <publisher name>
-       # provide your personal access token
+       # provide your personal access token (to paste, right-click into terminal)
        # login at https://dev.azure.com if your current token expired to create a new one
    ```
 
@@ -56,12 +56,13 @@ If vsce publish is run in a git repo, it will also create a version commit and t
 ```sh
 # first: update release notes by referencing the next version
 # commit all changes
-# from extension root
-# no ned to package by running: vsce package
-# this would generate <extenstion-name>.vsix with old version number
+# no need to package by running: vsce package, since this would
+# generate <extenstion-name>.vsix with old version number
+# instead, from extension root run:
 vsce publish patch
 # this bumps the version number, creates git tag and commit
 # after that, it publishes to VS Code Marketplace as <publisherID>.<extension-name>
+git push
 ```
 
 ## Configuration
@@ -116,6 +117,14 @@ Whenever a command, e.g. `markdown-execute.sayHello` is being invoked, this acti
       echo "Foo $ip4 $i"
    done
    exit
+```
+
+### Should not annotate (TODO)
+
+```json
+{
+  "foo": "bar"
+}
 ```
 
 ### Configure EC2 OS

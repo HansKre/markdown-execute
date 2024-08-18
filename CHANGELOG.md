@@ -1,5 +1,10 @@
 # Change Log
 
+## 1.0.1
+
+- Update dependencies
+- Keep reference of last used terminal
+
 ## 1.0.0
 
 - Add `python`-support

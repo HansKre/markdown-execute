@@ -41,14 +41,15 @@ This extension contributes the following settings:
 
 ## Backlog
 
-1. Analyse and fix why the watch-task in debugging terminal is ignored
-2. Add PHP & Python as execution runtimes:
+1. \```json should not be intrepreted as \```js
+2. Analyse and fix why the watch-task in debugging terminal is ignored
+3. Add PHP & Python as execution runtimes:
    1. `commandCodeLensProvider`:
       1. Execute command with Python
       2. Execute command PHP
    2. `extension.ts` & `execute.ts`:
       1. Add PHP and Python as execution runtimes
-3. Add quick select keybinding without promting:
+4. Add quick select keybinding without promting:
    1. `cmd+f1 s` Execute command as Shell
    2. `cmd+f1 s` Execute command with Nodejs
 
