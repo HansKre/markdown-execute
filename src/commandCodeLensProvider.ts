@@ -33,7 +33,10 @@ export class CommandCodeLensProvider implements vscode.CodeLensProvider {
       if (inCommand && runtime) {
         // add line to current command
         if (line !== '```' && !line.startsWith('//')) {
-          currentCommand += line + '\n';
+          // add the untrimmed line
+          currentCommand += lines[i];
+          // add line-break, but only, if not the very last line
+          if (lines[i + 1].trim() !== '```') currentCommand += '\n';
           continue;
         }
         // register the command block
@@ -65,6 +68,7 @@ export class CommandCodeLensProvider implements vscode.CodeLensProvider {
   // not used, only for interface compliance
   onDidChangeCodeLenses?: vscode.Event<void>;
 }
+
 function annotateCommandBlock(
   command: string,
   codeLenses: vscode.CodeLens[],
