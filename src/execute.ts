@@ -1,6 +1,6 @@
 import * as vscode from 'vscode';
 import { exec } from './extension';
-import { hasOwnProperties } from 'ts-type-safe';
+import { hasOwnProperties, hasOwnProperty } from 'ts-type-safe';
 
 const DEBUG_OUT = true;
 
@@ -23,8 +23,28 @@ function sendToTerminal(term: vscode.Terminal, command: string) {
     didRegisterOnDidCloseTerminal = true;
   }
 
+  let adjustedCommand = command;
+
+  if (
+    command.includes('node -e') &&
+    hasOwnProperty(term.creationOptions, 'shellPath') &&
+    typeof term.creationOptions.shellPath === 'string'
+  ) {
+    if (term.creationOptions.shellPath.includes('powershell')) {
+      // replace backslashes by backticks
+      adjustedCommand = command.replaceAll('\\', '`');
+    } else if (term.creationOptions.shellPath.includes('cmd')) {
+      // remove backslashes
+      adjustedCommand = command.replaceAll('\\', '');
+      // Remove all line breaks (both \r and \n)
+      //  * \r\n (Windows-style line breaks)
+      //  * \n (Unix-style line breaks)
+      //  * \r (old Mac-style line breaks)
+      adjustedCommand = adjustedCommand.replace(/(\r\n|\n|\r)/gm, '');
+    }
+  }
   term.show();
-  term.sendText(command);
+  term.sendText(adjustedCommand);
 
   vscode.window.showInformationMessage(
     'Code block sent to terminal for execution!'
