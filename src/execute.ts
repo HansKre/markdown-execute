@@ -26,13 +26,17 @@ function sendToTerminal(term: vscode.Terminal, command: string) {
   let adjustedCommand = command;
 
   if (
-    command.includes('node -e') &&
+    (command.includes('node -e') || command.includes('python -c')) &&
     hasOwnProperty(term.creationOptions, 'shellPath') &&
     typeof term.creationOptions.shellPath === 'string'
   ) {
     if (term.creationOptions.shellPath.includes('powershell')) {
-      // replace backslashes by backticks
-      adjustedCommand = command.replaceAll('\\', '`');
+      if (command.includes('node -e'))
+        // replace backslashes by backticks
+        adjustedCommand = command.replaceAll('\\', '`');
+      if (command.includes('python -c')) {
+        adjustedCommand = command.replaceAll('\\"', `'`);
+      }
     } else if (term.creationOptions.shellPath.includes('cmd')) {
       // remove backslashes
       adjustedCommand = command.replaceAll('\\', '');

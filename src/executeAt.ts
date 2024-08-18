@@ -5,6 +5,8 @@ import { execute } from './execute';
 import { exec } from './extension';
 import { Runtime } from './types/types';
 
+const DEBUG_OUT = false;
+
 export async function executeAt(
   runtime: string | undefined,
   selectedText: string
@@ -31,7 +33,7 @@ export async function executeAt(
           typeof err.stderr === 'string' &&
           err.stderr.includes('command not found')
         ) {
-          console.log(err.stderr);
+          console.error(err.stderr);
         }
       }
       try {
@@ -45,7 +47,7 @@ export async function executeAt(
           typeof err.stderr === 'string' &&
           err.stderr.includes('command not found')
         ) {
-          console.log(err.stderr);
+          console.error(err.stderr);
         }
       }
       if (python === 'none') {
@@ -69,11 +71,15 @@ function escapeForShell(inputString: string) {
     '\\': '\\\\',
   };
 
+  DEBUG_OUT && console.log('inputString before escaping', inputString);
+
   // Replace characters with their escaped equivalents
   const escapedString = inputString.replace(
     /[\\"`$]/g,
     (match) => replacements[match]
   );
+
+  DEBUG_OUT && console.log('escapedString', escapedString);
 
   return escapedString;
 }
