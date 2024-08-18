@@ -6,7 +6,7 @@ const util = require('util');
 export const exec = util.promisify(require('child_process').exec);
 import { CommandCodeLensProvider } from './commandCodeLensProvider';
 import { executeAt } from './executeAt';
-import { Command, Runtime, detectRuntime } from './types/types';
+import { Runtime, detectRuntime } from './types/types';
 
 const DEBUG_OUT = false;
 

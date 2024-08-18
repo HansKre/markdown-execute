@@ -38,7 +38,7 @@ export class CommandCodeLensProvider implements vscode.CodeLensProvider {
         }
         // register the command block
         if (line === '```') {
-          registerCommandBlock(
+          annotateCommandBlock(
             currentCommand,
             codeLenses,
             commandStartLine,
@@ -65,26 +65,25 @@ export class CommandCodeLensProvider implements vscode.CodeLensProvider {
   // not used, only for interface compliance
   onDidChangeCodeLenses?: vscode.Event<void>;
 }
-function registerCommandBlock(
-  currentCommand: string,
+function annotateCommandBlock(
+  command: string,
   codeLenses: vscode.CodeLens[],
   commandStartLine: number,
   runtime: Runtime
 ) {
-  const cmd: vscode.Command = {
+  const arg: Command = { command, runtime };
+
+  const annotation: vscode.Command = {
     title: `Execute command in terminal as ${runtime}-Script`,
     command: 'markdown-execute.execute',
     tooltip:
-      'Focuses on previously selected terminal if it is not busy and executes code block',
-    arguments: [<Command>{ command: currentCommand, runtime: runtime }],
+      'Focuses on previously active terminal and sends code block for execution',
+    arguments: [arg],
   };
-  codeLenses.push(
-    new vscode.CodeLens(
-      new vscode.Range(
-        new vscode.Position(commandStartLine, 0),
-        new vscode.Position(commandStartLine + 1, 0)
-      ),
-      cmd
-    )
+  const range = new vscode.Range(
+    new vscode.Position(commandStartLine, 0),
+    new vscode.Position(commandStartLine + 1, 0)
   );
+
+  codeLenses.push(new vscode.CodeLens(range, annotation));
 }
