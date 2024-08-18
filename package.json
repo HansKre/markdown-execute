@@ -2,7 +2,7 @@
   "name": "markdown-execute",
   "displayName": "Markdown Execute",
   "description": "Execute commands directly from Markdown",
-  "version": "1.0.2",
+  "version": "1.1.0",
   "publisher": "hanskre",
   "icon": "images/icon.png",
   "repository": {
