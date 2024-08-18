@@ -4,7 +4,10 @@ import { hasOwnProperties } from 'ts-type-safe';
 
 const DEBUG_OUT = false;
 
+let lastUsedTerminal: vscode.Terminal | undefined;
+
 function sendToTerminal(term: vscode.Terminal, command: string) {
+  lastUsedTerminal = term;
   term.show();
   term.sendText(command);
 
@@ -27,7 +30,7 @@ export async function execute(command: string | null): Promise<void> {
   }
 
   // get active terminal or create new one
-  let term = vscode.window.activeTerminal;
+  let term = lastUsedTerminal || vscode.window.activeTerminal;
 
   if (!term) {
     DEBUG_OUT &&
