@@ -1,5 +1,16 @@
 # Change Log
 
+## 1.1.0
+
+- Fix python support in Powershell
+- Fix issue #51: Python Error: IndentationError
+- Ignore ```json
+
+## 1.0.2
+
+- Fix node-support for powershell and cmd
+- Remove shell-specific isAvailable-logic to make terminal-detection work in all environments
+
 ## 1.0.1
 
 - Update dependencies
