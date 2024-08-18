@@ -104,7 +104,7 @@ Whenever a command, e.g. `markdown-execute.sayHello` is being invoked, this acti
 - Quicktime on mac, export to 480p
 - Use [ezgif](https://ezgif.com/video-to-gif) to speedup 3x and convert to gif
 
-## Commands for testing (examples of code blocks in markdown)
+## Testcases / Commands for testing (examples of code blocks in markdown)
 
 ### Login to jenkins and execute for-loop
 
@@ -119,7 +119,14 @@ Whenever a command, e.g. `markdown-execute.sayHello` is being invoked, this acti
    exit
 ```
 
-### Should not annotate (TODO)
+### Shell
+
+```sh
+   export jenkins=ec2-3-122-205-211.eu-central-1.compute.amazonaws.com
+   echo $jenkins
+```
+
+### Should not annotate
 
 ```json
 {
@@ -127,88 +134,87 @@ Whenever a command, e.g. `markdown-execute.sayHello` is being invoked, this acti
 }
 ```
 
-### Configure EC2 OS
+### Excaping of special chars in js
 
-1. Export public ip of instance
+```js
+let i = 12;
+console.log('ab$cd');
+console.log('ab$$cd');
+console.log('sdfdsgdfg');
+console.log(`ab${i}cd`);
+console.log(`three spaces   in a row`);
+```
 
-   ```sh
-      export jenkins=ec2-3-122-205-211.eu-central-1.compute.amazonaws.com
-      echo $jenkins
-   ```
+Expected output:
 
-2. Special chars
+```output
+node -e "let i = 12;
+dquote> console.log('ab\$cd');
+dquote> console.log('ab\$\$cd');
+dquote> console.log('sdfdsgdfg');
+dquote> console.log(\`ab\${i}cd\`);
+dquote> "
+ab$cd
+ab$$cd
+sdfdsgdfg
+ab12cd
+three spaces   in a row
+```
 
-   ```js
-   let i = 12;
-   console.log('ab$cd');
-   console.log('ab$$cd');
-   console.log('sdfdsgdfg');
-   console.log(`ab${i}cd`);
-   console.log(`three spaces   in a row`);
-   ```
+### Simple Python
 
-   Expected output:
+```python
+print("it works")
+```
 
-   ```output
-   node -e "let i = 12;
-   dquote> console.log('ab\$cd');
-   dquote> console.log('ab\$\$cd');
-   dquote> console.log('sdfdsgdfg');
-   dquote> console.log(\`ab\${i}cd\`);
-   dquote> "
-   ab$cd
-   ab$$cd
-   sdfdsgdfg
-   ab12cd
-   three spaces   in a row
-   ```
+### Python identation
 
-3. Test Python
+```python
+def say_hello(name):
+  print(f'Hello {name}')
+say_hello('World')
+```
 
-   ```python
-   print("it works")
-   ```
+### SSH into machine
 
-4. SSH into machine
+```sh
+   ssh -i ./udemy-devops-project/follow/secrets/aws-jenkins.pem ec2-user@$jenkins
+```
 
-   ```sh
-      ssh -i ./udemy-devops-project/follow/secrets/aws-jenkins.pem ec2-user@$jenkins
-   ```
+### Become root
 
-5. Become root
+```sh
+   sudo su -
+```
 
-   ```sh
-      sudo su -
-   ```
+### Change hostname & reboot
 
-6. Change hostname & reboot
+```sh
+   # either
+   hostnamectl set-hostname jenkins
+   # or: echo "jenkins" > /etc/hostname
+   # confirm
+   cat /etc/hostname
+   # reboot
+   reboot
+```
 
-   ```sh
-      # either
-      hostnamectl set-hostname jenkins
-      # or: echo "jenkins" > /etc/hostname
-      # confirm
-      cat /etc/hostname
-      # reboot
-      reboot
-   ```
+### SSH back into machine
 
-7. SSH back into machine
+```sh
+   # wait for reboot
+   sleep 30
+   ssh -i ./udemy-devops-project/follow/secrets/aws-jenkins.pem ec2-user@$jenkins
+   sudo su -
+```
 
-   ```sh
-      # wait for reboot
-      sleep 30
-      ssh -i ./udemy-devops-project/follow/secrets/aws-jenkins.pem ec2-user@$jenkins
-      sudo su -
-   ```
+### Update OS
 
-8. Update OS
+```sh
+   yum update -y && yum upgrade -y
+```
 
-   ```sh
-      yum update -y && yum upgrade -y
-   ```
-
-9. Install Jenkins and Java 11:
+### Install Jenkins and Java 11
 
 ```sh
    # add redhat-jenkins-repo

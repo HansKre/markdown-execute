@@ -2,7 +2,7 @@ import * as vscode from 'vscode';
 import { exec } from './extension';
 import { hasOwnProperties, hasOwnProperty } from 'ts-type-safe';
 
-const DEBUG_OUT = true;
+const DEBUG_OUT = false;
 
 let lastUsedTerminal: vscode.Terminal | undefined;
 let didRegisterOnDidCloseTerminal = false;

@@ -10,13 +10,14 @@ export interface Command {
 }
 
 export function detectRuntime(line: string): Runtime | null {
-  if (line.startsWith('```sh') || line.startsWith('```bash')) {
+  const trimmedLine = line.trim();
+  if (trimmedLine === '```sh' || trimmedLine === '```bash') {
     return Runtime.shell;
   }
-  if (line.startsWith('```js')) {
+  if (trimmedLine === '```js') {
     return Runtime.nodeJs;
   }
-  if (line.startsWith('```python')) {
+  if (trimmedLine === '```python') {
     return Runtime.python;
   }
   return null;
