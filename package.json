@@ -43,6 +43,19 @@
           "type": "boolean",
           "default": true,
           "description": "Allow active terminal running a SSH session as target for commands"
+        },
+        "markdown-execute.confirmation": {
+          "name": "Confirmation",
+          "type": "string",
+          "default": "pick",
+          "enum": ["none", "pick", "message", "modal"],
+          "enumDescriptions": [
+            "None: no confirmation before executing code block.",
+            "Pick: showQuickPick with options.",
+            "Message: showInformationMessage with buttons",
+            "Modal: modal showInformationMessage with buttons."
+          ],
+          "description": "Choose how confirmation is presented before executing code block."
         }
       }
     }
