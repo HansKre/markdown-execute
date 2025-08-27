@@ -27,6 +27,38 @@ export async function activate(context: vscode.ExtensionContext) {
           );
           return;
         }
+        const config = vscode.workspace.getConfiguration('markdown-execute');
+        const confirmation = config.get<string>('confirmation', 'none');
+        if (confirmation !== 'none') {
+          let confirmed = false;
+          if (confirmation === 'pick') {
+            const confirm = await vscode.window.showQuickPick(['Execute', 'Cancel'], {
+              placeHolder: 'Execute this code block in the terminal?',
+              ignoreFocusOut: true
+            });
+            confirmed = confirm === 'Execute';
+          }
+          else if (confirmation === 'message') {
+            const confirm = await vscode.window.showInformationMessage(
+              'Execute this code block in the terminal?',
+              'Execute',
+              'Cancel'
+            );
+            confirmed = confirm === 'Execute';
+          } else if (confirmation === 'modal') {
+            const confirm = await vscode.window.showInformationMessage(
+              'Execute this code block in the terminal?',
+              { modal: true },
+              'Execute',
+              'Cancel'
+            );
+            confirmed = confirm === 'Execute';
+          }
+          if (!confirmed) {
+            vscode.window.showInformationMessage('Execution cancelled.');
+            return;
+          }
+        }
         executeAt(args.runtime, args.command);
       }
     )
