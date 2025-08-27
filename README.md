@@ -1,6 +1,7 @@
 # makrdown-execute
 
 VSCode Extension which allows you to execute code from `markdown` files.
+Find it on the [Visual Studio Marketplace](https://marketplace.visualstudio.com/items?itemName=hanskre.markdown-execute).
 
 - Detects code blocks in your `markdown`-files starting with:
 

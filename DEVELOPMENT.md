@@ -65,6 +65,17 @@ vsce publish patch
 git push
 ```
 
+### Publishing manually
+
+If you cannot publish, e.g. due to expired PAT, you can also package and upload manually by running
+
+```sh
+vsce package
+```
+
+Go to the [marketplace](https://marketplace.visualstudio.com/manage/publishers/hanskre) and login.
+Click the "..." next to the Extension-Name and "Update". Upload the `.vsix`-file.
+
 ## Configuration
 
 VSCode will display commands in Shortcuts-menu, even if they are not registered in the `package.json`. Hence, they will lack a description / title. So it could be better to provide it proactively.
@@ -138,9 +149,9 @@ Whenever a command, e.g. `markdown-execute.sayHello` is being invoked, this acti
 
 ```js
 let i = 12;
-console.log('ab$cd');
-console.log('ab$$cd');
-console.log('sdfdsgdfg');
+console.log("ab$cd");
+console.log("ab$$cd");
+console.log("sdfdsgdfg");
 console.log(`ab${i}cd`);
 console.log(`three spaces   in a row`);
 ```
