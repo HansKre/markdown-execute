@@ -48,12 +48,17 @@
           "name": "Confirmation",
           "type": "string",
           "default": "pick",
-          "enum": ["none", "pick", "message", "modal"],
+          "enum": [
+            "none",
+            "pick",
+            "message",
+            "modal"
+          ],
           "enumDescriptions": [
-            "None: no confirmation before executing code block.",
-            "Pick: showQuickPick with options.",
-            "Message: showInformationMessage with buttons",
-            "Modal: modal showInformationMessage with buttons."
+            "none: no confirmation before executing code block.",
+            "pick: asks for confirmatioin using the QuickPick.",
+            "message: asks for confirmation using notification.",
+            "modal: asks for confirmation using a modal dialog."
           ],
           "description": "Choose how confirmation is presented before executing code block."
         }

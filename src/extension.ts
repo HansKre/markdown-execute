@@ -1,12 +1,12 @@
 // The module 'vscode' contains the VS Code extensibility API
 // Import the module and reference it with the alias vscode in your code below
-import * as vscode from 'vscode';
+import * as vscode from "vscode";
 // promisify cp.exec
-const util = require('util');
-export const exec = util.promisify(require('child_process').exec);
-import { CommandCodeLensProvider } from './commandCodeLensProvider';
-import { executeAt } from './executeAt';
-import { Runtime, detectRuntime } from './types/types';
+const util = require("util");
+export const exec = util.promisify(require("child_process").exec);
+import { CommandCodeLensProvider } from "./commandCodeLensProvider";
+import { executeAt } from "./executeAt";
+import { Runtime, detectRuntime } from "./types/types";
 
 const DEBUG_OUT = false;
 
@@ -15,50 +15,29 @@ const DEBUG_OUT = false;
 export async function activate(context: vscode.ExtensionContext) {
   context.subscriptions.push(
     vscode.commands.registerCommand(
-      'markdown-execute.execute',
+      "markdown-execute.execute",
       async (args) => {
         if (!args?.runtime) {
-          vscode.window.showInformationMessage('No runtime selected.');
+          vscode.window.showInformationMessage("No runtime selected.");
           return;
         }
         if (!args?.command) {
           vscode.window.showInformationMessage(
-            'Empty command, nothing to execute.'
+            "Empty command, nothing to execute."
           );
           return;
         }
-        const config = vscode.workspace.getConfiguration('markdown-execute');
-        const confirmation = config.get<string>('confirmation', 'none');
-        if (confirmation !== 'none') {
-          let confirmed = false;
-          if (confirmation === 'pick') {
-            const confirm = await vscode.window.showQuickPick(['Execute', 'Cancel'], {
-              placeHolder: 'Execute this code block in the terminal?',
-              ignoreFocusOut: true
-            });
-            confirmed = confirm === 'Execute';
-          }
-          else if (confirmation === 'message') {
-            const confirm = await vscode.window.showInformationMessage(
-              'Execute this code block in the terminal?',
-              'Execute',
-              'Cancel'
-            );
-            confirmed = confirm === 'Execute';
-          } else if (confirmation === 'modal') {
-            const confirm = await vscode.window.showInformationMessage(
-              'Execute this code block in the terminal?',
-              { modal: true },
-              'Execute',
-              'Cancel'
-            );
-            confirmed = confirm === 'Execute';
-          }
-          if (!confirmed) {
-            vscode.window.showInformationMessage('Execution cancelled.');
+        const config = vscode.workspace.getConfiguration("markdown-execute");
+        const confirmation = config.get<Confirmation>("confirmation", "none");
+
+        if (confirmation !== "none") {
+          const userChoice = await getUserChoice(confirmation);
+          if (userChoice !== "Execute") {
+            vscode.window.showInformationMessage("Execution cancelled.");
             return;
           }
         }
+
         executeAt(args.runtime, args.command);
       }
     )
@@ -66,25 +45,25 @@ export async function activate(context: vscode.ExtensionContext) {
   // Add the command to markdown files
   context.subscriptions.push(
     vscode.languages.registerCodeLensProvider(
-      { language: 'markdown', scheme: 'file' },
+      { language: "markdown", scheme: "file" },
       new CommandCodeLensProvider()
     )
   );
 
   context.subscriptions.push(
     vscode.commands.registerCommand(
-      'markdown-execute.executeSelection',
+      "markdown-execute.executeSelection",
       async () => {
         const activeEditor = vscode.window.activeTextEditor;
         if (!activeEditor) {
           vscode.window.showInformationMessage(
-            'Could not detect an active editor.'
+            "Could not detect an active editor."
           );
           return;
         }
 
-        const documentLines = activeEditor.document.getText().split('\n');
-        let selectedText = '';
+        const documentLines = activeEditor.document.getText().split("\n");
+        let selectedText = "";
         let runtime: Runtime | null = null;
 
         if (activeEditor.selection.isEmpty) {
@@ -108,12 +87,12 @@ export async function activate(context: vscode.ExtensionContext) {
           runtime = detectRuntime(lineAtCursor.trim());
           if (runtime) {
             // case 1
-            DEBUG_OUT && console.log('case 1');
+            DEBUG_OUT && console.log("case 1");
             // start one line after ```[js|sh] and go down
             let i = activeEditor.selection.start.line + 1;
             let reachedEnd = false;
             do {
-              if (documentLines[i].trim() === '```') {
+              if (documentLines[i].trim() === "```") {
                 reachedEnd = true;
                 continue;
               }
@@ -124,9 +103,9 @@ export async function activate(context: vscode.ExtensionContext) {
               );
               i++;
             } while (i >= 0 && !reachedEnd);
-          } else if (lineAtCursor.trim().startsWith('```')) {
+          } else if (lineAtCursor.trim().startsWith("```")) {
             // case 2
-            DEBUG_OUT && console.log('case 2');
+            DEBUG_OUT && console.log("case 2");
             // needs to have at least 2 lines above for valid code-block
             if (activeEditor.selection.start.line < 2) {
               return;
@@ -139,7 +118,7 @@ export async function activate(context: vscode.ExtensionContext) {
               if (runtime) {
                 reachedEnd = true;
                 // reverse lines
-                selectedText = selectedText.split('\n').reverse().join('\n');
+                selectedText = selectedText.split("\n").reverse().join("\n");
                 continue;
               }
               selectedText += newSelection(
@@ -152,7 +131,7 @@ export async function activate(context: vscode.ExtensionContext) {
             } while (i >= 0 && !reachedEnd);
           } else {
             // case 3
-            DEBUG_OUT && console.log('case 3');
+            DEBUG_OUT && console.log("case 3");
             DEBUG_OUT &&
               console.log(
                 documentLines[activeEditor.selection.start.line].trim()
@@ -218,18 +197,18 @@ export async function activate(context: vscode.ExtensionContext) {
         }
 
         // remove the last line break
-        if (selectedText.endsWith('\n')) {
+        if (selectedText.endsWith("\n")) {
           selectedText = selectedText.substring(0, selectedText.length - 1);
         }
 
         if (!selectedText) {
-          vscode.window.showInformationMessage('Nothing selected');
+          vscode.window.showInformationMessage("Nothing selected");
           return;
         }
 
         let options: vscode.InputBoxOptions = {
-          prompt: 'Select runtime: ',
-          placeHolder: '(execution runtime)',
+          prompt: "Select runtime: ",
+          placeHolder: "(execution runtime)",
         };
 
         if (!runtime) {
@@ -247,11 +226,38 @@ export async function activate(context: vscode.ExtensionContext) {
 
 function newSelection(line: string, start: number, stop: number) {
   const selection = line.substring(start, stop).trim();
-  if (selection && !selection.startsWith('//')) {
-    return selection + '\n';
+  if (selection && !selection.startsWith("//")) {
+    return selection + "\n";
   }
-  return '';
+  return "";
 }
 
 // this method is called when your extension is deactivated
 export function deactivate() {}
+
+// keep in sync with package.json > "markdown-execute.confirmation" > enum
+type Confirmation = "none" | "pick" | "message" | "modal";
+
+async function getUserChoice(mode: Exclude<Confirmation, "none">) {
+  switch (mode) {
+    case "pick":
+      return vscode.window.showQuickPick(["Execute", "Cancel"], {
+        placeHolder: "Execute this code block in the terminal?",
+        ignoreFocusOut: true,
+      });
+
+    case "message":
+      return vscode.window.showInformationMessage(
+        "Execute this code block in the terminal?",
+        "Execute",
+        "Cancel"
+      );
+
+    case "modal":
+      return vscode.window.showInformationMessage(
+        "Execute this code block in the terminal?",
+        { modal: true },
+        "Execute"
+      );
+  }
+}
