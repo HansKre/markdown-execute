@@ -57,3 +57,7 @@ This extension contributes the following settings:
 [Sycl´s Markdown Command Runner](https://marketplace.visualstudio.com/items?itemName=Sycl.markdown-command-runner) Extension served as inspiration. Thanks!
 
 It was lacking execution of code blocks in active SSH sessions, shortcuts and `NodeJs`-support, so I made my own.
+
+## Contributors
+
+- [@roman-drozd-it](https://github.com/roman-drozd-it)

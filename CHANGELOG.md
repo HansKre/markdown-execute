@@ -1,5 +1,9 @@
 # Change Log
 
+## 1.2.0
+
+- Option to confirm script execution by explicitly accepting or rejecting it (contributed by @roman-drozd-it)
+
 ## 1.1.0
 
 - Fix python support in Powershell
