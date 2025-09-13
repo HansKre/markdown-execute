@@ -1,8 +1,14 @@
 # makrdown-execute
 
-This extension transforms your VSCode into a Jupiter Notebook for Markdown files and allows you to execute code blocks (python, js, shell) from within markdown files, perfect for documentation, infrastructure, and tutorials.
+Transforms your VSCode into a Jupyter-like Notebook for Markdown files and lets you execute code blocks (`python`, `js`, `shell`) directly inside your documentation. Perfect for tutorials, infrastructure scripts, and interactive docs.  
+
+- **Execute Code Blocks Inline**: Run `sh`, `bash`, `js`, or `python` blocks straight from Markdown into the terminal with one click.  
+- **Quick Shortcuts**: Use `cmd+f1` (mac) / `ctrl+f1` (windows) or the command palette to execute selected code instantly.  
+- **Seamless Workflow**: Works side-by-side with the integrated VSCode terminal, with SSH session support for remote execution.  
 
 Find it on the [Visual Studio Marketplace](https://marketplace.visualstudio.com/items?itemName=hanskre.markdown-execute).
+
+## How to use
 
 - Detects code blocks in your `markdown`-files starting with:
 
