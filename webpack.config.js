@@ -45,4 +45,53 @@ const extensionConfig = {
     level: "log", // enables logging required for problem matchers
   },
 };
-module.exports = [ extensionConfig ];
+
+/** @type WebpackConfig */
+const testConfig = {
+  target: 'node',
+  mode: 'none',
+  entry: {
+    'test/runTest': './src/test/runTest.ts',
+    'test/suite/index': './src/test/suite/index.ts',
+    'test/suite/types.test': './src/test/suite/types.test.ts',
+    'test/suite/executeAt.test': './src/test/suite/executeAt.test.ts',
+    'test/suite/extension.test': './src/test/suite/extension.test.ts',
+    'test/suite/commandCodeLensProvider.test': './src/test/suite/commandCodeLensProvider.test.ts',
+  },
+  output: {
+    path: path.resolve(__dirname, 'dist'),
+    filename: '[name].js',
+    libraryTarget: 'commonjs2',
+    devtoolModuleFilenameTemplate: '../[resource-path]'
+  },
+  externals: {
+    vscode: 'commonjs vscode',
+    mocha: 'commonjs mocha',
+    chai: 'commonjs chai',
+    sinon: 'commonjs sinon'
+  },
+  resolve: {
+    extensions: ['.ts', '.js']
+  },
+  module: {
+    rules: [
+      {
+        test: /\.ts$/,
+        exclude: /node_modules/,
+        use: [
+          {
+            loader: 'ts-loader',
+            options: {
+              compilerOptions: {
+                module: 'commonjs'
+              }
+            }
+          }
+        ]
+      }
+    ]
+  },
+  devtool: 'nosources-source-map'
+};
+
+module.exports = [ extensionConfig, testConfig ];

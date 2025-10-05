@@ -43,10 +43,17 @@ export async function activate(context: vscode.ExtensionContext) {
     )
   );
   // Add the command to markdown files
+  const codeLensProvider = new CommandCodeLensProvider();
   context.subscriptions.push(
     vscode.languages.registerCodeLensProvider(
       { language: "markdown", scheme: "file" },
-      new CommandCodeLensProvider()
+      codeLensProvider
+    )
+  );
+  context.subscriptions.push(
+    vscode.languages.registerCodeLensProvider(
+      { language: "markdown", scheme: "untitled" },
+      codeLensProvider
     )
   );
 

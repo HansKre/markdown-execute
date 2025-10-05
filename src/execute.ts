@@ -33,7 +33,7 @@ function sendToTerminal(term: vscode.Terminal, command: string) {
     if (term.creationOptions.shellPath.includes('powershell')) {
       if (command.includes('node -e'))
         // replace backslashes by backticks
-        adjustedCommand = command.replaceAll('\\', '`');
+        {adjustedCommand = command.replaceAll('\\', '`');}
       if (command.includes('python -c')) {
         adjustedCommand = command.replaceAll('\\"', `'`);
       }

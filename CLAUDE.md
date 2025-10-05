@@ -26,6 +26,11 @@ npm install
 - Lint: `npm run lint`
 - Package for production: `npm run package`
 
+### Testing
+- Run all tests: `npm test`
+- Run unit tests only: `npm run test:unit`
+- See TESTING.md for detailed test documentation
+
 ### Publishing
 See DEVELOPMENT.md for detailed publishing instructions. Quick reference:
 ```sh
@@ -89,8 +94,19 @@ Uses webpack to bundle TypeScript → `dist/extension.js`:
 
 ### Testing
 
-Manual testing workflow (see DEVELOPMENT.md):
-1. Press `F5` to start Extension Development Host
-2. Create terminal instances
-3. Test code execution from markdown files
-4. Debug output goes to DEBUG CONSOLE in parent VSCode instance
+Comprehensive test suite with Mocha + Chai (see TESTING.md for details):
+
+**Test Structure:**
+- `src/test/suite/types.test.ts` - Runtime detection unit tests
+- `src/test/suite/executeAt.test.ts` - Shell escaping unit tests
+- `src/test/suite/commandCodeLensProvider.test.ts` - CodeLens provider integration tests
+- `src/test/suite/extension.test.ts` - End-to-end extension tests
+- `src/test/fixtures/test-cases.md` - All test case examples
+
+**Running Tests:**
+- `npm test` - Full test suite in VSCode instance
+- `npm run test:unit` - Fast unit tests only
+- `F5` > "Extension Tests" - Debug tests with breakpoints
+
+**Test Coverage:**
+All functionality is tested including: runtime detection, shell escaping, CodeLens generation, multi-line scripts, special characters, indentation preservation, and platform-specific shell handling.
