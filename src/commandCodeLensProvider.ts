@@ -39,13 +39,15 @@ export class CommandCodeLensProvider implements vscode.CodeLensProvider {
           let hasMoreContent = false;
           for (let j = i + 1; j < lines.length; j++) {
             const nextLine = lines[j].trim();
-            if (nextLine === '```') break;
+            if (nextLine === '```') {break;}
             if (nextLine && !nextLine.startsWith('//')) {
               hasMoreContent = true;
               break;
             }
           }
-          if (hasMoreContent) {currentCommand += '\n';}
+          if (hasMoreContent) {
+            currentCommand += '\n';
+          }
           continue;
         }
         // register the command block

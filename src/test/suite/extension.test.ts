@@ -186,8 +186,8 @@ suite('Confirmation Mode Tests', () => {
   test('Should execute without confirmation when mode is "none"', async () => {
     configStub.returns({
       get: (key: string, defaultValue?: any) => {
-        if (key === 'confirmation') return 'none';
-        if (key === 'executeInSsh') return true;
+        if (key === 'confirmation') {return 'none';}
+        if (key === 'executeInSsh') {return true;}
         return defaultValue;
       },
     });
@@ -210,7 +210,7 @@ suite('Confirmation Mode Tests', () => {
   test('Should show QuickPick confirmation when mode is "pick"', async () => {
     configStub.returns({
       get: (key: string, defaultValue?: any) => {
-        if (key === 'confirmation') return 'pick';
+        if (key === 'confirmation') {return 'pick';}
         return defaultValue;
       },
     });
@@ -231,7 +231,7 @@ suite('Confirmation Mode Tests', () => {
   test('Should cancel execution when user selects "Cancel" in pick mode', async () => {
     configStub.returns({
       get: (key: string, defaultValue?: any) => {
-        if (key === 'confirmation') return 'pick';
+        if (key === 'confirmation') {return 'pick';}
         return defaultValue;
       },
     });
@@ -251,8 +251,8 @@ suite('Confirmation Mode Tests', () => {
   test('Should show message confirmation when mode is "message"', async () => {
     configStub.returns({
       get: (key: string, defaultValue?: any) => {
-        if (key === 'confirmation') return 'message';
-        if (key === 'executeInSsh') return true;
+        if (key === 'confirmation') {return 'message';}
+        if (key === 'executeInSsh') {return true;}
         return defaultValue;
       },
     });
@@ -278,8 +278,8 @@ suite('Confirmation Mode Tests', () => {
   test('Should show modal confirmation when mode is "modal"', async () => {
     configStub.returns({
       get: (key: string, defaultValue?: any) => {
-        if (key === 'confirmation') return 'modal';
-        if (key === 'executeInSsh') return true;
+        if (key === 'confirmation') {return 'modal';}
+        if (key === 'executeInSsh') {return true;}
         return defaultValue;
       },
     });
@@ -306,7 +306,7 @@ suite('Confirmation Mode Tests', () => {
   test('Should handle empty runtime', async () => {
     configStub.returns({
       get: (key: string, defaultValue?: any) => {
-        if (key === 'confirmation') return 'none';
+        if (key === 'confirmation') {return 'none';}
         return defaultValue;
       },
     });
@@ -323,7 +323,7 @@ suite('Confirmation Mode Tests', () => {
   test('Should handle empty command', async () => {
     configStub.returns({
       get: (key: string, defaultValue?: any) => {
-        if (key === 'confirmation') return 'none';
+        if (key === 'confirmation') {return 'none';}
         return defaultValue;
       },
     });
