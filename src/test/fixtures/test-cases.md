@@ -71,6 +71,29 @@ def say_hello(name):
 say_hello('World')
 ```
 
+## Simple TypeScript
+
+```ts
+console.log("TypeScript works")
+```
+
+## TypeScript with types
+
+```typescript
+const greet = (name: string): void => {
+  console.log(`Hello ${name}`)
+}
+greet('World')
+```
+
+## TypeScript with escaping
+
+```ts
+let i = 42;
+console.log("ab$cd");
+console.log(`value: ${i}`);
+```
+
 ## SSH into machine
 
 ```sh
