@@ -35,8 +35,17 @@ export class CommandCodeLensProvider implements vscode.CodeLensProvider {
         if (line !== '```' && !line.startsWith('//')) {
           // add the untrimmed line
           currentCommand += lines[i];
-          // add line-break, but only, if not the very last line
-          if (lines[i + 1].trim() !== '```') currentCommand += '\n';
+          // add line-break, but only if there are more non-comment lines before closing fence
+          let hasMoreContent = false;
+          for (let j = i + 1; j < lines.length; j++) {
+            const nextLine = lines[j].trim();
+            if (nextLine === '```') break;
+            if (nextLine && !nextLine.startsWith('//')) {
+              hasMoreContent = true;
+              break;
+            }
+          }
+          if (hasMoreContent) {currentCommand += '\n';}
           continue;
         }
         // register the command block

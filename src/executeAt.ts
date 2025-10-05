@@ -63,7 +63,7 @@ export async function executeAt(
   }
 }
 
-function escapeForShell(inputString: string) {
+export function escapeForShell(inputString: string) {
   const replacements: { [key: string]: string } = {
     '"': '\\"',
     '`': '\\`',
