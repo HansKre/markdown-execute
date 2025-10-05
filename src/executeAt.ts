@@ -1,128 +1,59 @@
-/* eslint-disable @typescript-eslint/naming-convention */
 import * as vscode from 'vscode';
-import { hasOwnProperties } from 'ts-type-safe';
 import { execute } from './execute';
-import { exec } from './extension';
 import { Runtime } from './types/types';
-
-const DEBUG_OUT = false;
+import { detectExecutable } from './utils/runtimeDetector';
+import { escapeForShell } from './utils/shellEscape';
 
 export async function executeAt(
   runtime: string | undefined,
   selectedText: string
-) {
+): Promise<void> {
   switch (runtime) {
     case Runtime.shell:
-      execute(selectedText);
+      await execute(selectedText);
       break;
+
     case Runtime.nodeJs:
-      execute(`node -e "${escapeForShell(selectedText)}"`);
+      await execute(`node -e "${escapeForShell(selectedText)}"`);
       break;
+
     case Runtime.python:
-      let python: 'none' | 'python' | 'python3' = 'none';
-      try {
-        /**
-         * exec-function will either succeed and return an object containing the stdout, e.g. { stderr: '', stdout: 'Python 3.11.7\n' }
-         * or it will go into the catch-block if it fails.
-         */
-        await exec('python --version');
-        python = 'python';
-      } catch (err) {
-        if (
-          hasOwnProperties(err, ['code', 'stderr']) &&
-          typeof err.stderr === 'string' &&
-          err.stderr.includes('command not found')
-        ) {
-          console.error(err.stderr);
-        }
-      }
-      try {
-        if (python === 'none') {
-          await exec('python3 --version');
-          python = 'python3';
-        }
-      } catch (err) {
-        if (
-          hasOwnProperties(err, ['code', 'stderr']) &&
-          typeof err.stderr === 'string' &&
-          err.stderr.includes('command not found')
-        ) {
-          console.error(err.stderr);
-        }
-      }
-      if (python === 'none') {
-        vscode.window.showInformationMessage(
-          'Unable to find python or python3. Is it installed?'
-        );
-      } else {
-        execute(`${python} -c "${escapeForShell(selectedText)}"`);
-      }
+      await executePythonCode(selectedText);
       break;
+
     case Runtime.typeScript:
-      let tsx: 'none' | 'tsx' | 'ts-node' = 'none';
-      try {
-        /**
-         * exec-function will either succeed and return an object containing the stdout
-         * or it will go into the catch-block if it fails.
-         */
-        await exec('tsx --version');
-        tsx = 'tsx';
-      } catch (err) {
-        if (
-          hasOwnProperties(err, ['code', 'stderr']) &&
-          typeof err.stderr === 'string' &&
-          err.stderr.includes('command not found')
-        ) {
-          console.error(err.stderr);
-        }
-      }
-      try {
-        if (tsx === 'none') {
-          await exec('ts-node --version');
-          tsx = 'ts-node';
-        }
-      } catch (err) {
-        if (
-          hasOwnProperties(err, ['code', 'stderr']) &&
-          typeof err.stderr === 'string' &&
-          err.stderr.includes('command not found')
-        ) {
-          console.error(err.stderr);
-        }
-      }
-      if (tsx === 'none') {
-        vscode.window.showInformationMessage(
-          'Unable to find tsx or ts-node. Is it installed?'
-        );
-      } else if (tsx === 'tsx') {
-        execute(`tsx -e "${escapeForShell(selectedText)}"`);
-      } else {
-        // ts-node requires special flags to avoid 'export {}' issue and tsconfig conflicts
-        execute(`ts-node --transpile-only --compiler-options '{"module":"commonjs","moduleResolution":"node"}' -e "${escapeForShell(selectedText)}"`);
-      }
-      break;
-    default:
+      await executeTypeScriptCode(selectedText);
       break;
   }
 }
 
-export function escapeForShell(inputString: string) {
-  const replacements: { [key: string]: string } = {
-    '"': '\\"',
-    '`': '\\`',
-    $: '\\$',
-    '\\': '\\\\',
-  };
+async function executePythonCode(code: string): Promise<void> {
+  const python = await detectExecutable(['python', 'python3']);
 
-  DEBUG_OUT && console.log('inputString before escaping', inputString);
+  if (python === 'none') {
+    vscode.window.showInformationMessage(
+      'Unable to find python or python3. Is it installed?'
+    );
+    return;
+  }
 
-  // Replace characters with their escaped equivalents
-  const escapedString = inputString.replace(
-    /[\\"`$]/g,
-    (match) => replacements[match]
-  );
+  await execute(`${python} -c "${escapeForShell(code)}"`);
+}
 
-  DEBUG_OUT && console.log('escapedString', escapedString);
+async function executeTypeScriptCode(code: string): Promise<void> {
+  const tsRuntime = await detectExecutable(['tsx', 'ts-node']);
 
-  return escapedString;
+  if (tsRuntime === 'none') {
+    vscode.window.showInformationMessage(
+      'Unable to find tsx or ts-node. Is it installed?'
+    );
+    return;
+  }
+
+  if (tsRuntime === 'tsx') {
+    await execute(`tsx -e "${escapeForShell(code)}"`);
+  } else {
+    const tsNodeFlags = `--transpile-only --compiler-options '{"module":"commonjs","moduleResolution":"node"}'`;
+    await execute(`ts-node ${tsNodeFlags} -e "${escapeForShell(code)}"`);
+  }
 }

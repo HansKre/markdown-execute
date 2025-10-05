@@ -1,5 +1,5 @@
 import { expect } from 'chai';
-import { escapeForShell } from '../../executeAt';
+import { escapeForShell } from '../../utils/shellEscape';
 
 suite('Shell Escaping Tests', () => {
   test('Should escape double quotes', () => {
