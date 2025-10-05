@@ -1,7 +1,7 @@
 import * as assert from 'assert';
 import { expect } from 'chai';
 import * as vscode from 'vscode';
-import * as path from 'path';
+import * as sinon from 'sinon';
 
 suite('Extension Integration Tests', () => {
   test('Extension should be present', () => {
@@ -128,4 +128,174 @@ const x: number = 42;
 
   // Note: Keybindings are defined in package.json and cannot be easily tested
   // in the extension test suite. They are verified through manual testing.
+});
+
+suite('Confirmation Mode Tests', () => {
+  let showQuickPickStub: sinon.SinonStub;
+  let showInformationMessageStub: sinon.SinonStub;
+  let configStub: sinon.SinonStub;
+
+  setup(() => {
+    showQuickPickStub = sinon.stub(vscode.window, 'showQuickPick');
+    showInformationMessageStub = sinon.stub(vscode.window, 'showInformationMessage');
+    configStub = sinon.stub(vscode.workspace, 'getConfiguration');
+  });
+
+  teardown(() => {
+    sinon.restore();
+  });
+
+  test('Should execute without confirmation when mode is "none"', async () => {
+    configStub.returns({
+      get: (key: string, defaultValue?: any) => {
+        if (key === 'confirmation') return 'none';
+        if (key === 'executeInSsh') return true;
+        return defaultValue;
+      },
+    });
+
+    await vscode.commands.executeCommand('markdown-execute.execute', {
+      runtime: 'Shell',
+      command: 'echo "test"',
+    });
+
+    // Should not show any confirmation dialogs (QuickPick or modal/message before execution)
+    expect(showQuickPickStub.called).to.be.false;
+    // Note: showInformationMessage might be called for other reasons (like terminal errors),
+    // but it should NOT be called with the confirmation prompt
+    const confirmationCalls = showInformationMessageStub.getCalls().filter(
+      (call) => call.args[0]?.includes('Execute this code block')
+    );
+    expect(confirmationCalls.length).to.equal(0);
+  });
+
+  test('Should show QuickPick confirmation when mode is "pick"', async () => {
+    configStub.returns({
+      get: (key: string, defaultValue?: any) => {
+        if (key === 'confirmation') return 'pick';
+        return defaultValue;
+      },
+    });
+
+    showQuickPickStub.resolves('Execute');
+
+    await vscode.commands.executeCommand('markdown-execute.execute', {
+      runtime: 'Shell',
+      command: 'echo "test"',
+    });
+
+    // Should show QuickPick
+    expect(showQuickPickStub.calledOnce).to.be.true;
+    expect(showQuickPickStub.firstCall.args[0]).to.deep.equal(['Execute', 'Cancel']);
+    expect(showQuickPickStub.firstCall.args[1]).to.have.property('placeHolder');
+  });
+
+  test('Should cancel execution when user selects "Cancel" in pick mode', async () => {
+    configStub.returns({
+      get: (key: string, defaultValue?: any) => {
+        if (key === 'confirmation') return 'pick';
+        return defaultValue;
+      },
+    });
+
+    showQuickPickStub.resolves('Cancel');
+
+    await vscode.commands.executeCommand('markdown-execute.execute', {
+      runtime: 'Shell',
+      command: 'echo "test"',
+    });
+
+    expect(showQuickPickStub.calledOnce).to.be.true;
+    // Verify that a cancellation message was shown
+    expect(showInformationMessageStub.calledWith('Execution cancelled.')).to.be.true;
+  });
+
+  test('Should show message confirmation when mode is "message"', async () => {
+    configStub.returns({
+      get: (key: string, defaultValue?: any) => {
+        if (key === 'confirmation') return 'message';
+        if (key === 'executeInSsh') return true;
+        return defaultValue;
+      },
+    });
+
+    showInformationMessageStub.resolves('Execute');
+
+    await vscode.commands.executeCommand('markdown-execute.execute', {
+      runtime: 'Shell',
+      command: 'echo "test"',
+    });
+
+    // Should show information message
+    const confirmationCalls = showInformationMessageStub.getCalls().filter(
+      (call) => call.args[0]?.includes('Execute this code block')
+    );
+    expect(confirmationCalls.length).to.be.greaterThan(0);
+    const call = confirmationCalls[0];
+    expect(call.args[0]).to.include('Execute this code block');
+    expect(call.args[1]).to.equal('Execute');
+    expect(call.args[2]).to.equal('Cancel');
+  });
+
+  test('Should show modal confirmation when mode is "modal"', async () => {
+    configStub.returns({
+      get: (key: string, defaultValue?: any) => {
+        if (key === 'confirmation') return 'modal';
+        if (key === 'executeInSsh') return true;
+        return defaultValue;
+      },
+    });
+
+    showInformationMessageStub.resolves('Execute');
+
+    await vscode.commands.executeCommand('markdown-execute.execute', {
+      runtime: 'Shell',
+      command: 'echo "test"',
+    });
+
+    // Should show modal information message
+    const confirmationCalls = showInformationMessageStub.getCalls().filter(
+      (call) => call.args[0]?.includes('Execute this code block')
+    );
+    expect(confirmationCalls.length).to.be.greaterThan(0);
+    const call = confirmationCalls[0];
+    expect(call.args[0]).to.include('Execute this code block');
+    // Should have modal option
+    expect(call.args[1]).to.deep.equal({ modal: true });
+    expect(call.args[2]).to.equal('Execute');
+  });
+
+  test('Should handle empty runtime', async () => {
+    configStub.returns({
+      get: (key: string, defaultValue?: any) => {
+        if (key === 'confirmation') return 'none';
+        return defaultValue;
+      },
+    });
+
+    await vscode.commands.executeCommand('markdown-execute.execute', {
+      runtime: null,
+      command: 'echo "test"',
+    });
+
+    // Should show message about no runtime
+    expect(showInformationMessageStub.calledWith('No runtime selected.')).to.be.true;
+  });
+
+  test('Should handle empty command', async () => {
+    configStub.returns({
+      get: (key: string, defaultValue?: any) => {
+        if (key === 'confirmation') return 'none';
+        return defaultValue;
+      },
+    });
+
+    await vscode.commands.executeCommand('markdown-execute.execute', {
+      runtime: 'Shell',
+      command: '',
+    });
+
+    // Should show message about empty command
+    expect(showInformationMessageStub.calledWith('Empty command, nothing to execute.')).to.be.true;
+  });
 });
