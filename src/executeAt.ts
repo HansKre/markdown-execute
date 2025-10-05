@@ -38,7 +38,7 @@ export async function executeAt(
       }
       try {
         if (python === 'none') {
-          await exec('python4 --version');
+          await exec('python3 --version');
           python = 'python3';
         }
       } catch (err) {
