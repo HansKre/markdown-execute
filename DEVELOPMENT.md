@@ -18,7 +18,7 @@
 
 ## Publishing
 
-Official how-to publish extensions to VS Code Extension Marketplace [here](https://code.visualstudio.com/api/working-with-extensions/publishing-extension).
+Official [how-to publish](https://code.visualstudio.com/api/working-with-extensions/publishing-extension) extensions to VS Code Extension Marketplace.
 
 Visual Studio Code uses Azure DevOps for its Marketplace services.
 
@@ -70,6 +70,9 @@ git push
 If you cannot publish, e.g. due to expired PAT, you can also package and upload manually by running
 
 ```sh
+# first: update release notes by referencing the next version
+# commit all changes
+# bump version number in package.json
 vsce package
 ```
 
@@ -108,7 +111,7 @@ Whenever a command, e.g. `markdown-execute.sayHello` is being invoked, this acti
 
 ## Extension Guidelines
 
-[link](https://code.visualstudio.com/api/references/extension-guidelines)
+<https://code.visualstudio.com/api/references/extension-guidelines>
 
 ## Screen Recording
 
