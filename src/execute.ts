@@ -47,8 +47,22 @@ function sendToTerminal(term: vscode.Terminal, command: string) {
       adjustedCommand = adjustedCommand.replace(/(\r\n|\n|\r)/gm, '');
     }
   }
+
   term.show();
-  term.sendText(adjustedCommand);
+
+  // For multi-line commands, send line by line with Enter after each
+  // This allows the shell to recognize continuation (e.g., unclosed quotes)
+  // and preserves indentation in shell continuation prompts
+  if (adjustedCommand.includes('\n')) {
+    const lines = adjustedCommand.split('\n');
+    for (let i = 0; i < lines.length; i++) {
+      // Send each line with Enter (shouldExecute: true)
+      // The shell will show continuation prompt (>) for unclosed quotes
+      term.sendText(lines[i], true);
+    }
+  } else {
+    term.sendText(adjustedCommand);
+  }
 
   vscode.window.showInformationMessage(
     'Code block sent to terminal for execution!'
