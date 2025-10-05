@@ -1,9 +1,9 @@
 # makrdown-execute
 
-Transforms your VSCode into a Jupyter-like Notebook for Markdown files and lets you execute code blocks (`python`, `js`, `shell`) directly inside your documentation. Perfect for tutorials, infrastructure scripts, and interactive docs.  
+Transforms your VSCode into a Jupyter-like Notebook for Markdown files and lets you execute code blocks (`python`, `js`, `shell`, `typescript`) directly inside your documentation. Perfect for tutorials, infrastructure scripts, and interactive docs.
 
-- **Execute Code Blocks Inline**: Run `sh`, `bash`, `js`, or `python` blocks straight from Markdown into the terminal with one click.  
-- **Quick Shortcuts**: Use `cmd+f1` (mac) / `ctrl+f1` (windows) or the command palette to execute selected code instantly.  
+- **Execute Code Blocks Inline**: Run `sh`, `bash`, `js`, `python`, or `typescript` blocks straight from Markdown into the terminal with one click.
+- **Quick Shortcuts**: Use `cmd+f1` (mac) / `ctrl+f1` (windows) or the command palette to execute selected code instantly.
 - **Seamless Workflow**: Works side-by-side with the integrated VSCode terminal, with SSH session support for remote execution.  
 
 Find it on the [Visual Studio Marketplace](https://marketplace.visualstudio.com/items?itemName=hanskre.markdown-execute).
@@ -16,9 +16,11 @@ Find it on the [Visual Studio Marketplace](https://marketplace.visualstudio.com/
   - \`\`\`bash
   - \`\`\`js
   - \`\`\`python
+  - \`\`\`ts
+  - \`\`\`typescript
 
-- Adds `'Execute command in terminal as Shell-Script'`, `'Execute command in terminal as NodeJs-Script'`, `'Execute command in terminal as python-Script'` label.
-- Clicking on the label executes code-block until the closing ticks \`\`\` in the terminal as `Shell`, `NodeJs` or `Python` script.
+- Adds `'Execute command in terminal as Shell-Script'`, `'Execute command in terminal as NodeJs-Script'`, `'Execute command in terminal as Python-Script'`, or `'Execute command in terminal as TypeScript-Script'` label.
+- Clicking on the label executes code-block until the closing ticks \`\`\` in the terminal as `Shell`, `NodeJs`, `Python`, or `TypeScript` script.
 
 Alternatively, use `cmd+f1` (mac) / `ctrl+f1` (windows) shortcut to execute current selection.
 
@@ -50,15 +52,16 @@ This extension contributes the following settings:
 ## Backlog
 
 1. Analyse and fix why the watch-task in debugging terminal is ignored
-2. Add PHP & TypeScript as execution runtimes:
+2. Add PHP as execution runtime:
    1. `commandCodeLensProvider`:
-      1. Execute command with TS
-      2. Execute command PHP
+      1. Execute command PHP
    2. `extension.ts` & `execute.ts`:
-      1. Add PHP and TS as execution runtimes
+      1. Add PHP as execution runtime
 3. Add quick select keybinding without promting:
    1. `cmd+f1 s` Execute command as Shell
-   2. `cmd+f1 s` Execute command with Nodejs
+   2. `cmd+f1 n` Execute command with Nodejs
+   3. `cmd+f1 p` Execute command with Python
+   4. `cmd+f1 t` Execute command with TypeScript
 
 ## Appreciations
 

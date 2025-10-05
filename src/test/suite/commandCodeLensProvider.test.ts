@@ -70,6 +70,38 @@ print("hello")
     expect(codeLenses[0].command?.arguments?.[0].command).to.equal('print("hello")');
   });
 
+  test('Should provide CodeLens for TypeScript with ```ts', () => {
+    const content = `# Test
+\`\`\`ts
+console.log("TypeScript works")
+\`\`\`
+`;
+    const document = createMockDocument(content);
+    const codeLenses = provider.provideCodeLenses(document, null as any) as vscode.CodeLens[];
+
+    expect(codeLenses).to.have.lengthOf(1);
+    expect(codeLenses[0].command?.title).to.include('TypeScript-Script');
+    expect(codeLenses[0].command?.arguments?.[0].runtime).to.equal(Runtime.typeScript);
+    expect(codeLenses[0].command?.arguments?.[0].command).to.equal('console.log("TypeScript works")');
+  });
+
+  test('Should provide CodeLens for TypeScript with ```typescript', () => {
+    const content = `# Test
+\`\`\`typescript
+const greet = (name: string): void => {
+  console.log(\`Hello \${name}\`)
+}
+greet('World')
+\`\`\`
+`;
+    const document = createMockDocument(content);
+    const codeLenses = provider.provideCodeLenses(document, null as any) as vscode.CodeLens[];
+
+    expect(codeLenses).to.have.lengthOf(1);
+    expect(codeLenses[0].command?.title).to.include('TypeScript-Script');
+    expect(codeLenses[0].command?.arguments?.[0].runtime).to.equal(Runtime.typeScript);
+  });
+
   test('Should NOT provide CodeLens for unsupported languages', () => {
     const content = `# Test
 \`\`\`json
@@ -97,11 +129,15 @@ console.log("second");
 \`\`\`python
 print("third")
 \`\`\`
+
+\`\`\`ts
+console.log("fourth")
+\`\`\`
 `;
     const document = createMockDocument(content);
     const codeLenses = provider.provideCodeLenses(document, null as any) as vscode.CodeLens[];
 
-    expect(codeLenses).to.have.lengthOf(3);
+    expect(codeLenses).to.have.lengthOf(4);
   });
 
   test('Should skip comment lines starting with //', () => {

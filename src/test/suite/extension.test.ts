@@ -89,8 +89,8 @@ print("test")
 { "foo": "bar" }
 \`\`\`
 
-\`\`\`typescript
-const x: number = 42;
+\`\`\`yaml
+foo: bar
 \`\`\`
 `;
 

@@ -58,6 +58,49 @@ export async function executeAt(
         execute(`${python} -c "${escapeForShell(selectedText)}"`);
       }
       break;
+    case Runtime.typeScript:
+      let tsx: 'none' | 'tsx' | 'ts-node' = 'none';
+      try {
+        /**
+         * exec-function will either succeed and return an object containing the stdout
+         * or it will go into the catch-block if it fails.
+         */
+        await exec('tsx --version');
+        tsx = 'tsx';
+      } catch (err) {
+        if (
+          hasOwnProperties(err, ['code', 'stderr']) &&
+          typeof err.stderr === 'string' &&
+          err.stderr.includes('command not found')
+        ) {
+          console.error(err.stderr);
+        }
+      }
+      try {
+        if (tsx === 'none') {
+          await exec('ts-node --version');
+          tsx = 'ts-node';
+        }
+      } catch (err) {
+        if (
+          hasOwnProperties(err, ['code', 'stderr']) &&
+          typeof err.stderr === 'string' &&
+          err.stderr.includes('command not found')
+        ) {
+          console.error(err.stderr);
+        }
+      }
+      if (tsx === 'none') {
+        vscode.window.showInformationMessage(
+          'Unable to find tsx or ts-node. Is it installed?'
+        );
+      } else if (tsx === 'tsx') {
+        execute(`tsx -e "${escapeForShell(selectedText)}"`);
+      } else {
+        // ts-node requires special flags to avoid 'export {}' issue and tsconfig conflicts
+        execute(`ts-node --transpile-only --compiler-options '{"module":"commonjs","moduleResolution":"node"}' -e "${escapeForShell(selectedText)}"`);
+      }
+      break;
     default:
       break;
   }

@@ -2,6 +2,7 @@ export enum Runtime {
   shell = 'Shell',
   nodeJs = 'NodeJs',
   python = 'Python',
+  typeScript = 'TypeScript',
 }
 
 export interface Command {
@@ -19,6 +20,9 @@ export function detectRuntime(line: string): Runtime | null {
   }
   if (trimmedLine === '```python') {
     return Runtime.python;
+  }
+  if (trimmedLine === '```ts' || trimmedLine === '```typescript') {
+    return Runtime.typeScript;
   }
   return null;
 }

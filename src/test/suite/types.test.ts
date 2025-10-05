@@ -22,6 +22,16 @@ suite('Runtime Detection Tests', () => {
     expect(result).to.equal(Runtime.python);
   });
 
+  test('Should detect TypeScript runtime from ```ts', () => {
+    const result = detectRuntime('```ts');
+    expect(result).to.equal(Runtime.typeScript);
+  });
+
+  test('Should detect TypeScript runtime from ```typescript', () => {
+    const result = detectRuntime('```typescript');
+    expect(result).to.equal(Runtime.typeScript);
+  });
+
   test('Should return null for unsupported runtime', () => {
     const result = detectRuntime('```json');
     expect(result).to.be.null;
@@ -32,6 +42,8 @@ suite('Runtime Detection Tests', () => {
     expect(detectRuntime('  ```bash  ')).to.equal(Runtime.shell);
     expect(detectRuntime('  ```js  ')).to.equal(Runtime.nodeJs);
     expect(detectRuntime('  ```python  ')).to.equal(Runtime.python);
+    expect(detectRuntime('  ```ts  ')).to.equal(Runtime.typeScript);
+    expect(detectRuntime('  ```typescript  ')).to.equal(Runtime.typeScript);
   });
 
   test('Should return null for empty string', () => {

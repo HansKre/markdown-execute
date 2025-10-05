@@ -4,7 +4,7 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 ## Project Overview
 
-This is a VSCode extension that allows users to execute code blocks directly from markdown files. It supports Shell, NodeJS, and Python runtimes. The extension provides two ways to execute code:
+This is a VSCode extension that allows users to execute code blocks directly from markdown files. It supports Shell, NodeJS, Python, and TypeScript runtimes. The extension provides two ways to execute code:
 1. **CodeLens annotations** - clickable labels above code blocks
 2. **Keyboard shortcut** (`cmd+f1` / `ctrl+f1`) - execute selection or current code block
 
@@ -48,7 +48,7 @@ vsce publish patch  # auto-increments version, creates git tag/commit, publishes
 
 **CommandCodeLensProvider** (commandCodeLensProvider.ts):
 - Parses markdown documents to find code blocks
-- Detects runtime from fence markers (```sh, ```bash, ```js, ```python)
+- Detects runtime from fence markers (```sh, ```bash, ```js, ```python, ```ts, ```typescript)
 - Creates clickable CodeLens annotations above code blocks
 - Ignores lines starting with `//`
 
@@ -57,6 +57,9 @@ vsce publish patch  # auto-increments version, creates git tag/commit, publishes
 - For Shell: executes directly
 - For NodeJS: wraps in `node -e "..."`
 - For Python: checks for python/python3 availability, wraps in `python -c "..."`
+- For TypeScript: checks for tsx/ts-node availability
+  - tsx: wraps in `tsx -e "..."`
+  - ts-node: wraps in `ts-node --transpile-only --compiler-options '{"module":"commonjs","moduleResolution":"node"}' -e "..."` (flags avoid 'export {}' issue and tsconfig conflicts)
 - Handles shell escaping for special characters: `"`, `` ` ``, `$`, `\`
 
 **execute** (execute.ts):
@@ -68,8 +71,8 @@ vsce publish patch  # auto-increments version, creates git tag/commit, publishes
 - Prevents SSH execution based on user configuration
 
 **Runtime Detection** (types/types.ts):
-- Recognizes: ````sh`, ````bash`, ````js`, ````python`
-- Returns Runtime enum: Shell, NodeJs, Python
+- Recognizes: ````sh`, ````bash`, ````js`, ````python`, ````ts`, ````typescript`
+- Returns Runtime enum: Shell, NodeJs, Python, TypeScript
 
 ### Selection Logic (executeSelection command)
 
