@@ -74,4 +74,20 @@ console.log(\`three spaces   in a row\`);`;
     const expected = 'print(f\'Hello {name}\')';
     expect(escapeForShell(input)).to.equal(expected);
   });
+
+  test('Should preserve multi-line strings with indentation', () => {
+    const input = `echo "services:
+  caddy:
+    image: caddy:alpine
+    volumes:
+      - ./Caddyfile:/etc/caddy/Caddyfile"`;
+
+    const result = escapeForShell(input);
+
+    // Should preserve the newlines and spaces
+    expect(result).to.include('services:');
+    expect(result).to.include('  caddy:');
+    expect(result).to.include('    image: caddy:alpine');
+    expect(result).to.include('      - ./Caddyfile:/etc/caddy/Caddyfile');
+  });
 });

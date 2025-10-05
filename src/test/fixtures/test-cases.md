@@ -126,3 +126,22 @@ java --version
 # install jenkins
 yum install jenkins -y
 ```
+
+## Multi-line echo with indentation (YAML)
+
+```bash
+echo "services:
+  caddy:
+    image: caddy:alpine
+    restart: unless-stopped
+    container_name: caddy
+    volumes:
+      - ./Caddyfile:/etc/caddy/Caddyfile
+      - ./certs:/certs
+      - ./config:/config
+      - ./data:/data
+      - ./sites:/srv
+    network_mode: \"host\"" > docker-compose.yml
+cat docker-compose.yml
+rm docker-compose.yml
+```

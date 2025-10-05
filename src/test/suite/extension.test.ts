@@ -126,6 +126,44 @@ const x: number = 42;
     expect(confirmation).to.not.be.undefined;
   });
 
+  test('Should send multi-line shell commands with preserved indentation', async () => {
+    const content = `# Test Multi-line Echo
+
+\`\`\`bash
+echo "services:
+  caddy:
+    image: caddy:alpine
+    volumes:
+      - ./Caddyfile:/etc/caddy/Caddyfile"
+\`\`\`
+`;
+
+    const doc = await vscode.workspace.openTextDocument({
+      language: 'markdown',
+      content: content,
+    });
+
+    await vscode.window.showTextDocument(doc);
+    await new Promise((resolve) => setTimeout(resolve, 500));
+
+    const codeLenses = await vscode.commands.executeCommand<vscode.CodeLens[]>(
+      'vscode.executeCodeLensProvider',
+      doc.uri
+    );
+
+    expect(codeLenses).to.not.be.undefined;
+    expect(codeLenses!.length).to.equal(1);
+
+    // Verify the command includes the full multi-line content
+    const bashLens = codeLenses![0];
+    expect(bashLens.command?.arguments).to.not.be.undefined;
+    const commandText = bashLens.command?.arguments![0].command;
+    expect(commandText).to.include('services:');
+    expect(commandText).to.include('  caddy:');
+    expect(commandText).to.include('    image: caddy:alpine');
+    expect(commandText).to.include('      - ./Caddyfile:/etc/caddy/Caddyfile');
+  });
+
   // Note: Keybindings are defined in package.json and cannot be easily tested
   // in the extension test suite. They are verified through manual testing.
 });
