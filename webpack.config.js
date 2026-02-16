@@ -56,6 +56,7 @@ const testConfig = {
     'test/suite/types.test': './src/test/suite/types.test.ts',
     'test/suite/executeAt.test': './src/test/suite/executeAt.test.ts',
     'test/suite/extension.test': './src/test/suite/extension.test.ts',
+    'test/suite/execution.test': './src/test/suite/execution.test.ts',
     'test/suite/commandCodeLensProvider.test': './src/test/suite/commandCodeLensProvider.test.ts',
   },
   output: {
