@@ -32,6 +32,16 @@ suite('Runtime Detection Tests', () => {
     expect(result).to.equal(Runtime.typeScript);
   });
 
+  test('Should detect PowerShell runtime from ```powershell', () => {
+    const result = detectRuntime('```powershell');
+    expect(result).to.equal(Runtime.powershell);
+  });
+
+  test('Should detect PowerShell runtime from ```pwsh', () => {
+    const result = detectRuntime('```pwsh');
+    expect(result).to.equal(Runtime.powershell);
+  });
+
   test('Should return null for unsupported runtime', () => {
     const result = detectRuntime('```json');
     expect(result).to.be.null;
@@ -44,6 +54,8 @@ suite('Runtime Detection Tests', () => {
     expect(detectRuntime('  ```python  ')).to.equal(Runtime.python);
     expect(detectRuntime('  ```ts  ')).to.equal(Runtime.typeScript);
     expect(detectRuntime('  ```typescript  ')).to.equal(Runtime.typeScript);
+    expect(detectRuntime('  ```powershell  ')).to.equal(Runtime.powershell);
+    expect(detectRuntime('  ```pwsh  ')).to.equal(Runtime.powershell);
   });
 
   test('Should return null for empty string', () => {

@@ -102,6 +102,45 @@ greet('World')
     expect(codeLenses[0].command?.arguments?.[0].runtime).to.equal(Runtime.typeScript);
   });
 
+  test('Should provide CodeLens for PowerShell', () => {
+    const content = `# Test
+\`\`\`powershell
+Write-Host "Hello PowerShell"
+\`\`\`
+`;
+    const document = createMockDocument(content);
+    const codeLenses = provider.provideCodeLenses(document, null as any) as vscode.CodeLens[];
+
+    expect(codeLenses).to.have.lengthOf(1);
+    expect(codeLenses[0].command?.title).to.include('Powershell-Script');
+    expect(codeLenses[0].command?.arguments?.[0].runtime).to.equal(Runtime.powershell);
+    expect(codeLenses[0].command?.arguments?.[0].command).to.equal(
+      'Write-Host "Hello PowerShell"'
+    );
+  });
+
+  test('Should provide CodeLens for PowerShell with special characters', () => {
+    const content = `# Test
+\`\`\`pwsh
+Write-Host "Hello, World!"
+\`\`\`
+`;
+    const document = createMockDocument(content);
+    const codeLenses = provider.provideCodeLenses(
+      document,
+      null as any
+    ) as vscode.CodeLens[];
+
+    expect(codeLenses).to.have.lengthOf(1);
+    expect(codeLenses[0].command?.title).to.include('Powershell-Script');
+    expect(codeLenses[0].command?.arguments?.[0].runtime).to.equal(
+      Runtime.powershell
+    );
+    expect(codeLenses[0].command?.arguments?.[0].command).to.equal(
+      'Write-Host "Hello, World!"'
+    );
+  });
+
   test('Should NOT provide CodeLens for unsupported languages', () => {
     const content = `# Test
 \`\`\`json

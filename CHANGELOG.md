@@ -1,5 +1,9 @@
 # Change Log
 
+## 1.4.0
+
+- Add PowerShell Support
+
 ## 1.3.0
 
 - Implement test automation (for consistent behavior and quality)

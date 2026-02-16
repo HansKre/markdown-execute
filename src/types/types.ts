@@ -3,6 +3,7 @@ export enum Runtime {
   nodeJs = 'NodeJs',
   python = 'Python',
   typeScript = 'TypeScript',
+  powershell = 'Powershell',
 }
 
 export interface Command {
@@ -23,6 +24,9 @@ export function detectRuntime(line: string): Runtime | null {
   }
   if (trimmedLine === '```ts' || trimmedLine === '```typescript') {
     return Runtime.typeScript;
+  }
+  if (trimmedLine === '```powershell' || trimmedLine === '```pwsh') {
+    return Runtime.powershell;
   }
   return null;
 }

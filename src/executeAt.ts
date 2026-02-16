@@ -24,6 +24,10 @@ export async function executeAt(
     case Runtime.typeScript:
       await executeTypeScriptCode(selectedText);
       break;
+
+    case Runtime.powershell:
+      await executePowershellCode(selectedText);
+      break;
   }
 }
 
@@ -57,3 +61,19 @@ async function executeTypeScriptCode(code: string): Promise<void> {
     await execute(`ts-node ${tsNodeFlags} -e "${escapeForShell(code)}"`);
   }
 }
+
+async function executePowershellCode(code: string): Promise<void> {
+  const powershellCommand =
+    process.platform === 'win32' ? 'powershell.exe' : 'pwsh';
+  const powershell = await detectExecutable([powershellCommand]);
+
+  if (powershell === 'none') {
+    vscode.window.showInformationMessage(
+      `Unable to find ${powershellCommand}. Is PowerShell installed and added to your PATH?`
+    );
+    return;
+  }
+
+  await execute(`${powershell} -Command "${escapeForShell(code)}"`);
+}
+

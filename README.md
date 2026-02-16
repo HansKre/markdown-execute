@@ -18,9 +18,11 @@ Find it on the [Visual Studio Marketplace](https://marketplace.visualstudio.com/
   - \`\`\`python
   - \`\`\`ts
   - \`\`\`typescript
+  - \`\`\`powershell
+  - \`\`\`pwsh
 
-- Adds `'Execute command in terminal as Shell-Script'`, `'Execute command in terminal as NodeJs-Script'`, `'Execute command in terminal as Python-Script'`, or `'Execute command in terminal as TypeScript-Script'` label.
-- Clicking on the label executes code-block until the closing ticks \`\`\` in the terminal as `Shell`, `NodeJs`, `Python`, or `TypeScript` script.
+- Adds `'Execute command in terminal as Shell-Script'`, `'Execute command in terminal as NodeJs-Script'`, `'Execute command in terminal as Python-Script'`, `'Execute command in terminal as TypeScript-Script'`, or `'Execute command in terminal as PowerShell-Script'` label.
+- Clicking on the label executes code-block until the closing ticks \`\`\` in the terminal as `Shell`, `NodeJs`, `Python`, `TypeScript`, or `PowerShell` script.
 
 Alternatively, use `cmd+f1` (mac) / `ctrl+f1` (windows) shortcut to execute current selection.
 
@@ -62,6 +64,7 @@ This extension contributes the following settings:
    2. `cmd+f1 n` Execute command with Nodejs
    3. `cmd+f1 p` Execute command with Python
    4. `cmd+f1 t` Execute command with TypeScript
+   5. `cmd+f1 w` Execute command with PowerShell
 
 ## Appreciations
 
