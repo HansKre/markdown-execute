@@ -1,5 +1,9 @@
 # Change Log
 
+## 1.4.2
+
+- Fix PowerShell escaping for Windows
+
 ## 1.4.1
 
 - Fix PowerShell support for Windows Terminal

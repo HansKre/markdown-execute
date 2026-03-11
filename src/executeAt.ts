@@ -6,7 +6,11 @@ import {
   getPowershellCandidates,
   type ExecutableCandidate,
 } from "./utils/runtimeDetector";
-import { escapeForShell } from "./utils/shellEscape";
+import {
+  escapeForShell,
+  escapeForPowershellWindows,
+  escapeForPowershellUnix,
+} from "./utils/shellEscape";
 
 export async function executeAt(
   runtime: string | undefined,
@@ -80,5 +84,12 @@ async function executePowershellCode(code: string): Promise<void> {
     return;
   }
 
-  await execute(`${powershell} -Command "${escapeForShell(code)}"`);
+  const isWindows = process.platform === "win32";
+  if (isWindows) {
+    await execute(
+      `${powershell} -Command "${escapeForPowershellWindows(code)}"`,
+    );
+  } else {
+    await execute(`${powershell} -Command '${escapeForPowershellUnix(code)}'`);
+  }
 }
