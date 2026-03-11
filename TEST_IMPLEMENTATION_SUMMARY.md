@@ -9,6 +9,7 @@ Implemented a comprehensive test suite for the markdown-execute VSCode extension
 **Chosen Stack: Mocha + Chai + @vscode/test-electron + Sinon**
 
 **Rationale:**
+
 - **Mocha** - Industry standard, already integrated with VSCode ecosystem, TDD style fits VSCode patterns
 - **Chai** - Expressive assertions, excellent TypeScript support
 - **@vscode/test-electron** - Official VSCode testing harness (already installed)
@@ -20,12 +21,14 @@ Implemented a comprehensive test suite for the markdown-execute VSCode extension
 ### Files Created
 
 #### Test Infrastructure
+
 1. **src/test/runTest.ts** - Test runner entry point for VSCode test harness
 2. **src/test/suite/index.ts** - Mocha test suite configuration and file discovery
 3. **.mocharc.json** - Mocha configuration
 4. **.vscode/launch.json** - Updated with correct test debugging configuration
 
 #### Unit Tests
+
 5. **src/test/suite/types.test.ts** - Runtime detection tests (8 tests)
    - Shell detection (sh, bash)
    - NodeJS detection (js)
@@ -41,6 +44,7 @@ Implemented a comprehensive test suite for the markdown-execute VSCode extension
    - Space preservation
 
 #### Integration Tests
+
 7. **src/test/suite/commandCodeLensProvider.test.ts** - CodeLens provider tests (11 tests)
    - CodeLens generation for each runtime
    - Unsupported language filtering
@@ -58,6 +62,7 @@ Implemented a comprehensive test suite for the markdown-execute VSCode extension
    - CodeLens integration with markdown documents
 
 #### Test Fixtures
+
 9. **src/test/fixtures/test-cases.md** - All required test cases from specifications
    - Login to Jenkins with for-loop
    - Shell variable export/echo
@@ -68,6 +73,7 @@ Implemented a comprehensive test suite for the markdown-execute VSCode extension
    - Multi-line bash scripts
 
 #### Documentation
+
 10. **src/test/README.md** - Detailed test suite documentation
 11. **TESTING.md** - Testing guide for developers
 12. **TEST_IMPLEMENTATION_SUMMARY.md** - This file
@@ -92,12 +98,12 @@ Implemented a comprehensive test suite for the markdown-execute VSCode extension
 
 ### Total Tests: 37 tests across 4 test files
 
-| Category | File | Tests | Coverage |
-|----------|------|-------|----------|
-| Unit | types.test.ts | 8 | Runtime detection logic |
-| Unit | executeAt.test.ts | 11 | Shell escaping, special characters |
-| Integration | commandCodeLensProvider.test.ts | 11 | CodeLens generation, parsing |
-| E2E | extension.test.ts | 7 | Extension lifecycle, commands |
+| Category    | File                            | Tests | Coverage                           |
+| ----------- | ------------------------------- | ----- | ---------------------------------- |
+| Unit        | types.test.ts                   | 8     | Runtime detection logic            |
+| Unit        | executeAt.test.ts               | 11    | Shell escaping, special characters |
+| Integration | commandCodeLensProvider.test.ts | 11    | CodeLens generation, parsing       |
+| E2E         | extension.test.ts               | 7     | Extension lifecycle, commands      |
 
 ### Test Case Validation
 
@@ -121,6 +127,7 @@ All minimal test cases from requirements are covered:
 ## Running the Tests
 
 ### Quick Start
+
 ```sh
 # Install dependencies
 npm install
@@ -136,6 +143,7 @@ npm run test:unit
 ```
 
 ### Development Workflow
+
 1. Make code changes
 2. Run `npm run compile` to build
 3. Run `npm test` to verify
@@ -144,16 +152,19 @@ npm run test:unit
 ## Architecture Highlights
 
 ### Mocking Strategy
+
 - **TextDocument mocking**: Custom implementation for CodeLens provider tests
 - Avoids file system I/O for faster tests
 - Type-safe mocking matching VSCode API
 
 ### Test Organization
+
 - **TDD style**: Using Mocha's `suite()` and `test()` functions
 - **Separation of concerns**: Unit tests separate from integration tests
 - **Descriptive names**: Test names clearly describe what is being tested
 
 ### Type Safety
+
 - All tests written in TypeScript
 - Full type checking during compilation
 - No use of `any` except for VSCode API mocks
@@ -161,6 +172,7 @@ npm run test:unit
 ## Compilation Verification
 
 Successfully compiles with:
+
 ```
 npm run compile
 ✓ extension.js (main bundle)

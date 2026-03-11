@@ -1,12 +1,25 @@
-import * as fs from 'fs';
-import * as path from 'path';
-import * as os from 'os';
-import { expect } from 'chai';
-import { executeAt } from '../../executeAt';
-import { Runtime } from '../../types/types';
-import * as vscode from 'vscode';
+import * as fs from "fs";
+import * as path from "path";
+import * as os from "os";
+import * as cp from "child_process";
+import { expect } from "chai";
+import { executeAt } from "../../executeAt";
+import { Runtime } from "../../types/types";
+import { getPowershellCandidates } from "../../utils/runtimeDetector";
+import * as vscode from "vscode";
 
-suite('Execution Tests', () => {
+function isPowershellAvailable(): boolean {
+  return getPowershellCandidates().some(({ executable, versionFlag }) => {
+    try {
+      cp.execSync(`${executable} ${versionFlag}`, { stdio: "ignore" });
+      return true;
+    } catch {
+      return false;
+    }
+  });
+}
+
+suite("Execution Tests", () => {
   const filesToCleanup: string[] = [];
 
   teardown(() => {
@@ -21,21 +34,27 @@ suite('Execution Tests', () => {
   function getTempFilePath(): string {
     const filePath = path.join(
       os.tmpdir(),
-      `vscode-ext-test-${Date.now()}.txt`
+      `vscode-ext-test-${Date.now()}.txt`,
     );
     filesToCleanup.push(filePath);
     return filePath;
   }
 
-  test('Should execute PowerShell and capture output', async function () {
+  test("Should execute PowerShell and capture output", async function () {
+    if (!isPowershellAvailable()) {
+      this.skip();
+    }
     this.timeout(10000); // Increase timeout for this test
 
     // Arrange
     const tempFilePath = getTempFilePath();
     const command = `Write-Output "PowerShell works!" | Out-File -FilePath '${tempFilePath}' -Encoding utf8`;
-    const config = vscode.workspace.getConfiguration('markdown-execute');
-    await config.update('confirmation', 'none', vscode.ConfigurationTarget.Global);
-
+    const config = vscode.workspace.getConfiguration("markdown-execute");
+    await config.update(
+      "confirmation",
+      "none",
+      vscode.ConfigurationTarget.Global,
+    );
 
     // Act
     await executeAt(Runtime.powershell, command);
@@ -48,7 +67,7 @@ suite('Execution Tests', () => {
 
       while (Date.now() - startTime < timeout) {
         if (fs.existsSync(filePath)) {
-          const content = fs.readFileSync(filePath, 'utf-8');
+          const content = fs.readFileSync(filePath, "utf-8");
           if (content.trim()) {
             return content;
           }
@@ -59,12 +78,16 @@ suite('Execution Tests', () => {
     };
 
     const output = await pollForFileContent(tempFilePath);
-    expect(output.trim()).to.equal('PowerShell works!');
-    
-    await config.update('confirmation', undefined, vscode.ConfigurationTarget.Global);
+    expect(output.trim()).to.equal("PowerShell works!");
+
+    await config.update(
+      "confirmation",
+      undefined,
+      vscode.ConfigurationTarget.Global,
+    );
   });
 
-  test('Should execute bash command to create docker-compose.yml and verify content', async function () {
+  test("Should execute bash command to create docker-compose.yml and verify content", async function () {
     this.timeout(10000); // Increase timeout for this test
 
     // Arrange
@@ -81,7 +104,10 @@ suite('Execution Tests', () => {
       - ./sites:/srv
     network_mode: "host"`; // This is what the file should contain
 
-    const tempDockerComposePath = path.join(os.tmpdir(), `docker-compose-${Date.now()}.yml`);
+    const tempDockerComposePath = path.join(
+      os.tmpdir(),
+      `docker-compose-${Date.now()}.yml`,
+    );
     filesToCleanup.push(tempDockerComposePath); // Ensure it's cleaned up
 
     // The bash command to execute. The inner double quotes for "host" need to be escaped
@@ -90,8 +116,12 @@ suite('Execution Tests', () => {
 
     const command = `echo "${bashCommandContent}" > ${tempDockerComposePath}`;
 
-    const config = vscode.workspace.getConfiguration('markdown-execute');
-    await config.update('confirmation', 'none', vscode.ConfigurationTarget.Global);
+    const config = vscode.workspace.getConfiguration("markdown-execute");
+    await config.update(
+      "confirmation",
+      "none",
+      vscode.ConfigurationTarget.Global,
+    );
 
     // Act
     await executeAt(Runtime.shell, command);
@@ -104,7 +134,7 @@ suite('Execution Tests', () => {
 
       while (Date.now() - startTime < timeout) {
         if (fs.existsSync(filePath)) {
-          const content = fs.readFileSync(filePath, 'utf-8');
+          const content = fs.readFileSync(filePath, "utf-8");
           if (content.trim()) {
             return content;
           }
@@ -116,7 +146,11 @@ suite('Execution Tests', () => {
 
     const output = await pollForFileContent(tempDockerComposePath);
     expect(output.trim()).to.equal(expectedYamlContent.trim());
-    
-    await config.update('confirmation', undefined, vscode.ConfigurationTarget.Global);
+
+    await config.update(
+      "confirmation",
+      undefined,
+      vscode.ConfigurationTarget.Global,
+    );
   });
 });

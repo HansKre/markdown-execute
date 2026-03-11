@@ -1,5 +1,9 @@
 # Change Log
 
+## 1.4.1
+
+- Fix PowerShell support for Windows Terminal
+
 ## 1.4.0
 
 - Add PowerShell Support

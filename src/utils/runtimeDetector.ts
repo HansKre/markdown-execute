@@ -1,24 +1,43 @@
-import { exec } from '../extension';
-import { hasOwnProperties } from 'ts-type-safe';
+import { exec } from "../extension";
 
-type RuntimeExecutable = 'none' | string;
+type RuntimeExecutable = "none" | string;
+
+export interface ExecutableCandidate {
+  executable: string;
+  versionFlag: string;
+}
+
+export function getPowershellCandidates(): ExecutableCandidate[] {
+  const isWindows = process.platform === "win32";
+  return isWindows
+    ? [
+        { executable: "pwsh", versionFlag: "--version" },
+        { executable: "powershell.exe", versionFlag: "-Command Get-Date" },
+      ]
+    : [
+        { executable: "pwsh", versionFlag: "--version" },
+        { executable: "pwsh-lts", versionFlag: "--version" },
+      ];
+}
 
 export async function detectExecutable(
-  executables: string[]
+  candidates: string[] | ExecutableCandidate[],
 ): Promise<RuntimeExecutable> {
-  for (const executable of executables) {
+  const normalized: ExecutableCandidate[] =
+    typeof candidates[0] === "string"
+      ? (candidates as string[]).map((e) => ({
+          executable: e,
+          versionFlag: "--version",
+        }))
+      : (candidates as ExecutableCandidate[]);
+
+  for (const { executable, versionFlag } of normalized) {
     try {
-      await exec(`${executable} --version`);
+      await exec(`${executable} ${versionFlag}`);
       return executable;
-    } catch (err) {
-      if (
-        hasOwnProperties(err, ['code', 'stderr']) &&
-        typeof err.stderr === 'string' &&
-        err.stderr.includes('command not found')
-      ) {
-        console.error(err.stderr);
-      }
+    } catch {
+      // executable not found, try next candidate
     }
   }
-  return 'none';
+  return "none";
 }
