@@ -1,8 +1,8 @@
 {
   "name": "markdown-execute",
   "displayName": "Markdown Execute",
-  "description": "Execute Shell, NodeJS, Python, and TypeScript commands directly from Markdown",
-  "version": "1.2.0",
+  "description": "Execute Shell, NodeJS, Python, PowerShell and TypeScript commands directly from Markdown",
+  "version": "1.4.2",
   "publisher": "hanskre",
   "icon": "images/icon.png",
   "repository": {
@@ -16,8 +16,7 @@
     "Other"
   ],
   "activationEvents": [
-    "onLanguage:markdown",
-    "onCommand:markdown-execute.executeSelection"
+    "onLanguage:markdown"
   ],
   "main": "./dist/extension.js",
   "contributes": {
@@ -72,8 +71,7 @@
     "package": "webpack --mode production --devtool hidden-source-map",
     "lint": "eslint src --ext ts",
     "pretest": "npm run compile",
-    "test": "node ./dist/test/runTest.js",
-    "test:unit": "npm run compile && mocha --require ts-node/register 'src/test/suite/**/*.test.ts'"
+    "test": "node ./dist/test/runTest.js"
   },
   "devDependencies": {
     "@types/chai": "^5.2.2",
@@ -88,7 +86,7 @@
     "chai": "^6.2.0",
     "eslint": "^9.34.0",
     "glob": "^11.0.3",
-    "mocha": "^11.7.4",
+    "mocha": "^11.3.0",
     "sinon": "^21.0.0",
     "ts-loader": "^9.5.4",
     "typescript": "^5.9.2",

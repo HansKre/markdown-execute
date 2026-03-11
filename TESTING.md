@@ -15,18 +15,23 @@ Comprehensive test suite for the markdown-execute VSCode extension using Mocha, 
 ## Running Tests
 
 ### All Tests (Recommended)
+
 ```sh
 npm test
 ```
+
 Compiles the extension and runs all tests in a VSCode test instance.
 
 ### Unit Tests Only (Fast feedback)
+
 ```sh
 npm run test:unit
 ```
+
 Runs unit tests without launching VSCode - faster for development.
 
 ### Debugging Tests
+
 1. Open VSCode
 2. Press `F5` or use Run > Start Debugging
 3. Select "Extension Tests" configuration
@@ -53,6 +58,7 @@ src/test/
 ### Unit Tests
 
 **types.test.ts** - Runtime Detection
+
 - ✅ Detects Shell from ` ```sh ` and ` ```bash `
 - ✅ Detects NodeJS from ` ```js `
 - ✅ Detects Python from ` ```python `
@@ -60,6 +66,7 @@ src/test/
 - ✅ Handles whitespace correctly
 
 **executeAt.test.ts** - Shell Escaping
+
 - ✅ Escapes double quotes, backticks, dollar signs, backslashes
 - ✅ JavaScript special characters (template literals, variables)
 - ✅ Python strings and f-strings
@@ -68,6 +75,7 @@ src/test/
 ### Integration Tests
 
 **commandCodeLensProvider.test.ts** - CodeLens Functionality
+
 - ✅ Provides CodeLens for supported runtimes (sh, bash, js, python)
 - ✅ Skips unsupported languages (json, typescript, etc.)
 - ✅ Handles multiple code blocks
@@ -77,6 +85,7 @@ src/test/
 - ✅ Special character handling
 
 **extension.test.ts** - End-to-End
+
 - ✅ Extension activation
 - ✅ Command registration
 - ✅ Configuration accessibility
@@ -87,17 +96,17 @@ src/test/
 
 All test cases from DEVELOPMENT.md requirements are covered:
 
-| Test Case | Status | Location |
-|-----------|--------|----------|
-| Login to Jenkins with for-loop | ✅ | commandCodeLensProvider.test.ts |
-| Shell variable export/echo | ✅ | commandCodeLensProvider.test.ts |
-| JSON should not annotate | ✅ | commandCodeLensProvider.test.ts |
-| JavaScript special char escaping | ✅ | executeAt.test.ts |
-| Simple Python print | ✅ | commandCodeLensProvider.test.ts |
-| Python indentation | ✅ | commandCodeLensProvider.test.ts |
-| SSH commands | ✅ | fixtures/test-cases.md |
-| Multi-line bash scripts | ✅ | commandCodeLensProvider.test.ts |
-| Comments handling | ✅ | commandCodeLensProvider.test.ts |
+| Test Case                        | Status | Location                        |
+| -------------------------------- | ------ | ------------------------------- |
+| Login to Jenkins with for-loop   | ✅     | commandCodeLensProvider.test.ts |
+| Shell variable export/echo       | ✅     | commandCodeLensProvider.test.ts |
+| JSON should not annotate         | ✅     | commandCodeLensProvider.test.ts |
+| JavaScript special char escaping | ✅     | executeAt.test.ts               |
+| Simple Python print              | ✅     | commandCodeLensProvider.test.ts |
+| Python indentation               | ✅     | commandCodeLensProvider.test.ts |
+| SSH commands                     | ✅     | fixtures/test-cases.md          |
+| Multi-line bash scripts          | ✅     | commandCodeLensProvider.test.ts |
+| Comments handling                | ✅     | commandCodeLensProvider.test.ts |
 
 ## Adding New Tests
 
@@ -107,14 +116,15 @@ All test cases from DEVELOPMENT.md requirements are covered:
 4. Run `npm run compile` then `npm test`
 
 Example:
-```typescript
-import { expect } from 'chai';
-import { myFunction } from '../../myModule';
 
-suite('My Feature Tests', () => {
-  test('Should do something', () => {
-    const result = myFunction('input');
-    expect(result).to.equal('expected');
+```typescript
+import { expect } from "chai";
+import { myFunction } from "../../myModule";
+
+suite("My Feature Tests", () => {
+  test("Should do something", () => {
+    const result = myFunction("input");
+    expect(result).to.equal("expected");
   });
 });
 ```
@@ -135,15 +145,18 @@ To integrate with CI/CD:
 ## Troubleshooting
 
 ### Tests not found
+
 - Ensure files end with `.test.ts`
 - Check webpack compiled them to `dist/test/suite/`
 - Run `npm run compile` first
 
 ### VSCode API errors
+
 - Some tests require full VSCode instance
 - Use `npm test` instead of `npm run test:unit` for those
 
 ### Type errors during compilation
+
 - Check `tsconfig.json` includes test files
 - Verify all imports are correct
 - Ensure `@types/*` packages are installed
@@ -151,6 +164,7 @@ To integrate with CI/CD:
 ## Future Enhancements
 
 Potential additions:
+
 - [ ] Code coverage reports with nyc/istanbul
 - [ ] Performance benchmarks for large markdown files
 - [ ] Terminal interaction mocking with sinon

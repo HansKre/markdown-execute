@@ -1,5 +1,24 @@
 # Change Log
 
+## 1.4.2
+
+- Fix PowerShell escaping for Windows
+
+## 1.4.1
+
+- Fix PowerShell support for Windows Terminal
+
+## 1.4.0
+
+- Add PowerShell Support
+
+## 1.3.0
+
+- Implement test automation (for consistent behavior and quality)
+- Major refactoring of codebase for better maintainability
+- Fix "Indentation is not kept while sending bash commands #54"
+- Add "TypeScript Support #50"
+
 ## 1.2.0
 
 - Option to confirm script execution by explicitly accepting or rejecting it (contributed by @roman-drozd-it)

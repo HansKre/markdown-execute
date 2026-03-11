@@ -94,6 +94,18 @@ console.log("ab$cd");
 console.log(`value: ${i}`);
 ```
 
+## Simple PowerShell
+
+```powershell
+Write-Host "PowerShell works!"
+```
+
+## PowerShell with special characters
+
+```pwsh
+Write-Host "Hello, World!"
+```
+
 ## SSH into machine
 
 ```sh
